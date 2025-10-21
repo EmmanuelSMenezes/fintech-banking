@@ -28,7 +28,8 @@ public class UserRepository : IUserRepository
                 is_active as IsActive,
                 created_at as CreatedAt,
                 updated_at as UpdatedAt,
-                webhook_url as WebhookUrl
+                webhook_url as WebhookUrl,
+                role as Role
             FROM users WHERE id = @Id";
         return await connection.QueryFirstOrDefaultAsync<User>(sql, new { Id = id });
     }
@@ -47,7 +48,8 @@ public class UserRepository : IUserRepository
                 is_active as IsActive,
                 created_at as CreatedAt,
                 updated_at as UpdatedAt,
-                webhook_url as WebhookUrl
+                webhook_url as WebhookUrl,
+                role as Role
             FROM users WHERE email = @Email";
         return await connection.QueryFirstOrDefaultAsync<User>(sql, new { Email = email });
     }
@@ -66,7 +68,8 @@ public class UserRepository : IUserRepository
                 is_active as IsActive,
                 created_at as CreatedAt,
                 updated_at as UpdatedAt,
-                webhook_url as WebhookUrl
+                webhook_url as WebhookUrl,
+                role as Role
             FROM users ORDER BY created_at DESC";
         return await connection.QueryAsync<User>(sql);
     }
@@ -75,10 +78,10 @@ public class UserRepository : IUserRepository
     {
         using var connection = new NpgsqlConnection(_connectionString);
         const string sql = @"
-            INSERT INTO users (id, email, password_hash, full_name, document, phone_number, is_active, created_at)
-            VALUES (@Id, @Email, @PasswordHash, @FullName, @Document, @PhoneNumber, @IsActive, @CreatedAt)
+            INSERT INTO users (id, email, password_hash, full_name, document, phone_number, is_active, created_at, role)
+            VALUES (@Id, @Email, @PasswordHash, @FullName, @Document, @PhoneNumber, @IsActive, @CreatedAt, @Role)
             RETURNING *";
-        
+
         return await connection.QueryFirstOrDefaultAsync<User>(sql, user);
     }
 
@@ -86,13 +89,13 @@ public class UserRepository : IUserRepository
     {
         using var connection = new NpgsqlConnection(_connectionString);
         const string sql = @"
-            UPDATE users 
-            SET email = @Email, password_hash = @PasswordHash, full_name = @FullName, 
-                document = @Document, phone_number = @PhoneNumber, is_active = @IsActive, 
-                updated_at = @UpdatedAt, webhook_url = @WebhookUrl
+            UPDATE users
+            SET email = @Email, password_hash = @PasswordHash, full_name = @FullName,
+                document = @Document, phone_number = @PhoneNumber, is_active = @IsActive,
+                updated_at = @UpdatedAt, webhook_url = @WebhookUrl, role = @Role
             WHERE id = @Id
             RETURNING *";
-        
+
         return await connection.QueryFirstOrDefaultAsync<User>(sql, user);
     }
 

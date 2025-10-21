@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using FinTechBanking.Core.Interfaces;
 using FinTechBanking.Core.Entities;
+using Npgsql;
 
 namespace FinTechBanking.API.Interna.Controllers;
 
@@ -14,15 +15,96 @@ public class AdminController : ControllerBase
     private readonly IUserRepository _userRepository;
     private readonly IAccountRepository _accountRepository;
     private readonly ITransactionRepository _transactionRepository;
+    private readonly IConfiguration _configuration;
 
     public AdminController(
         IUserRepository userRepository,
         IAccountRepository accountRepository,
-        ITransactionRepository transactionRepository)
+        ITransactionRepository transactionRepository,
+        IConfiguration configuration)
     {
         _userRepository = userRepository;
         _accountRepository = accountRepository;
         _transactionRepository = transactionRepository;
+        _configuration = configuration;
+    }
+
+    [HttpPost("fix-admin-role")]
+    [AllowAnonymous]
+    public async Task<ActionResult<object>> FixAdminRole()
+    {
+        try
+        {
+            var admin = await _userRepository.GetByEmailAsync("admin@owaypay.com");
+            if (admin == null)
+                return NotFound(new { message = "Admin user not found" });
+
+            admin.Role = "admin";
+            await _userRepository.UpdateAsync(admin);
+
+            return Ok(new { message = "Admin role updated successfully", admin = new { email = admin.Email, role = admin.Role } });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = "Error updating admin role", error = ex.Message });
+        }
+    }
+
+    [HttpGet("check-admin-role")]
+    [AllowAnonymous]
+    public async Task<ActionResult<object>> CheckAdminRole()
+    {
+        try
+        {
+            var admin = await _userRepository.GetByEmailAsync("admin@owaypay.com");
+            if (admin == null)
+                return NotFound(new { message = "Admin user not found" });
+
+            return Ok(new { email = admin.Email, role = admin.Role });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = "Error checking admin role", error = ex.Message });
+        }
+    }
+
+    [HttpPost("migrate-add-role")]
+    [AllowAnonymous]
+    public async Task<ActionResult<object>> MigrateAddRole()
+    {
+        try
+        {
+            using var connection = new Npgsql.NpgsqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+            await connection.OpenAsync();
+
+            // Check if role column exists
+            var checkSql = @"
+                SELECT COUNT(*) FROM information_schema.columns
+                WHERE table_name = 'users' AND column_name = 'role'";
+
+            var command = connection.CreateCommand();
+            command.CommandText = checkSql;
+            var result = (long)await command.ExecuteScalarAsync();
+
+            if (result > 0)
+                return Ok(new { message = "Role column already exists" });
+
+            // Add role column
+            var alterSql = "ALTER TABLE users ADD COLUMN role VARCHAR(50) DEFAULT 'user'";
+            command.CommandText = alterSql;
+            await command.ExecuteNonQueryAsync();
+
+            // Update admin user
+            var updateSql = "UPDATE users SET role = 'admin' WHERE email = 'admin@owaypay.com'";
+            command.CommandText = updateSql;
+            await command.ExecuteNonQueryAsync();
+
+            return Ok(new { message = "Migration completed successfully" });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = "Error running migration", error = ex.Message });
+        }
     }
 
     [HttpGet("profile")]
