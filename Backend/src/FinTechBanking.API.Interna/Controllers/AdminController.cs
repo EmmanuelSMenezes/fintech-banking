@@ -25,12 +25,47 @@ public class AdminController : ControllerBase
         _transactionRepository = transactionRepository;
     }
 
+    [HttpGet("profile")]
+    [Authorize]
+    public async Task<ActionResult<object>> GetProfile()
+    {
+        try
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim == null || !Guid.TryParse(userIdClaim.Value, out var userId))
+                return Unauthorized(new { message = "Invalid user ID" });
+
+            var user = await _userRepository.GetByIdAsync(userId);
+            if (user == null)
+                return NotFound(new { message = "User not found" });
+
+            return Ok(new
+            {
+                message = "Profile retrieved successfully",
+                user = new
+                {
+                    id = user.Id,
+                    email = user.Email,
+                    fullName = user.FullName,
+                    role = user.Role ?? "user"
+                }
+            });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = "Error retrieving profile", error = ex.Message });
+        }
+    }
+
     [HttpPost("users")]
     [Authorize(Roles = "admin")]
     public async Task<ActionResult<object>> CreateUser([FromBody] CreateUserRequest request)
     {
         try
         {
+            if (string.IsNullOrWhiteSpace(request.Email) || string.IsNullOrWhiteSpace(request.Password))
+                return BadRequest(new { message = "Email and password are required" });
+
             var existingUser = await _userRepository.GetByEmailAsync(request.Email);
             if (existingUser != null)
                 return BadRequest(new { message = "User already exists" });
@@ -40,8 +75,11 @@ public class AdminController : ControllerBase
                 Id = Guid.NewGuid(),
                 Email = request.Email,
                 FullName = request.FullName,
-                PasswordHash = BCrypt.Net.BCrypt.HashPassword("TempPassword123!"),
+                Document = request.Document,
+                PhoneNumber = request.PhoneNumber,
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
                 IsActive = true,
+                Role = "user",
                 CreatedAt = DateTime.UtcNow
             };
 
@@ -281,9 +319,10 @@ public class AdminController : ControllerBase
 /// </summary>
 public class CreateUserRequest
 {
-    public string Email { get; set; }
-    public string FullName { get; set; }
-    public string Document { get; set; }
-    public string PhoneNumber { get; set; }
+    public string? Email { get; set; }
+    public string? Password { get; set; }
+    public string? FullName { get; set; }
+    public string? Document { get; set; }
+    public string? PhoneNumber { get; set; }
 }
 

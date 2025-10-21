@@ -1,10 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 // next
 import { useRouter } from 'next/router';
 // components
 import LoadingScreen from '../components/loading-screen';
 //
-import Login from '../pages/auth/login';
 import { useAuthContext } from './useAuthContext';
 
 // ----------------------------------------------------------------------
@@ -16,28 +15,24 @@ type AuthGuardProps = {
 export default function AuthGuard({ children }: AuthGuardProps) {
   const { isAuthenticated, isInitialized } = useAuthContext();
 
-  const { pathname, push } = useRouter();
-
-  const [requestedLocation, setRequestedLocation] = useState<string | null>(null);
+  const { push } = useRouter();
 
   useEffect(() => {
-    if (requestedLocation && pathname !== requestedLocation) {
-      push(requestedLocation);
+    if (!isInitialized) {
+      return;
     }
-    if (isAuthenticated) {
-      setRequestedLocation(null);
+
+    if (!isAuthenticated) {
+      push('/auth/login');
     }
-  }, [isAuthenticated, pathname, push, requestedLocation]);
+  }, [isAuthenticated, isInitialized, push]);
 
   if (!isInitialized) {
     return <LoadingScreen />;
   }
 
   if (!isAuthenticated) {
-    if (pathname !== requestedLocation) {
-      setRequestedLocation(pathname);
-    }
-    return <Login />;
+    return <LoadingScreen />;
   }
 
   return <> {children} </>;

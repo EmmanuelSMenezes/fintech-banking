@@ -31,6 +31,7 @@ import Iconify from '../../components/iconify';
 import axios from '../../utils/axios';
 // components
 import ClienteEditDialog from './ClienteEditDialog';
+import ClienteCreateDialog from './ClienteCreateDialog';
 
 // ============================================================================
 // TIPOS
@@ -66,6 +67,7 @@ export default function ClientesTable() {
   const [selectedCliente, setSelectedCliente] = useState<Cliente | null>(null);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [createDialogOpen, setCreateDialogOpen] = useState(false);
   const [actionLoading, setActionLoading] = useState(false);
 
   useEffect(() => {
@@ -155,15 +157,24 @@ export default function ClientesTable() {
       <Box sx={{ p: 3 }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
           <Typography variant="h6">Gerenciamento de Clientes</Typography>
-          <TextField
-            placeholder="Buscar por nome ou email..."
-            size="small"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            InputProps={{
-              startAdornment: <Iconify icon="eva:search-fill" sx={{ mr: 1, color: 'text.disabled' }} />,
-            }}
-          />
+          <Stack direction="row" spacing={2} alignItems="center">
+            <TextField
+              placeholder="Buscar por nome ou email..."
+              size="small"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              InputProps={{
+                startAdornment: <Iconify icon="eva:search-fill" sx={{ mr: 1, color: 'text.disabled' }} />,
+              }}
+            />
+            <Button
+              variant="contained"
+              startIcon={<Iconify icon="eva:plus-fill" />}
+              onClick={() => setCreateDialogOpen(true)}
+            >
+              Novo Cliente
+            </Button>
+          </Stack>
         </Box>
 
         {loading ? (
@@ -295,6 +306,13 @@ export default function ClientesTable() {
           </Button>
         </DialogActions>
       </Dialog>
+
+      {/* CREATE CLIENT DIALOG */}
+      <ClienteCreateDialog
+        open={createDialogOpen}
+        onClose={() => setCreateDialogOpen(false)}
+        onSuccess={fetchClientes}
+      />
     </Card>
   );
 }
