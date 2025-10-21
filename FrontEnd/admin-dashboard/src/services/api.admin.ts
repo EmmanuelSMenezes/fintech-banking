@@ -73,7 +73,7 @@ export const authService = {
    * Obter perfil do administrador
    */
   getProfile: async () => {
-    const response = await axios.get('/api/admin/profile');
+    const response = await axios.get('/api/admin/users/profile');
     return response.data;
   },
 
@@ -87,100 +87,55 @@ export const authService = {
 };
 
 // ============================================================================
-// CLIENTES
+// USUÁRIOS (Clientes)
 // ============================================================================
 
 export const clienteService = {
   /**
-   * Listar todos os clientes
+   * Listar todos os usuários/clientes
    */
   list: async (page = 1, limit = 10) => {
-    const response = await axios.get('/api/admin/clientes', {
+    const response = await axios.get('/api/admin/users', {
       params: { page, limit },
     });
     return response.data;
   },
 
   /**
-   * Obter cliente por ID
+   * Obter usuário/cliente por ID
    */
   getById: async (id: string) => {
-    const response = await axios.get(`/api/admin/clientes/${id}`);
+    const response = await axios.get(`/api/admin/users/${id}`);
     return response.data;
   },
 
   /**
-   * Criar novo cliente
+   * Criar novo usuário/cliente
    */
   create: async (data: any) => {
-    const response = await axios.post('/api/admin/clientes', data);
+    const response = await axios.post('/api/admin/users', data);
     return response.data;
   },
 
   /**
-   * Atualizar cliente
+   * Atualizar usuário/cliente
    */
   update: async (id: string, data: any) => {
-    const response = await axios.put(`/api/admin/clientes/${id}`, data);
+    const response = await axios.put(`/api/admin/users/${id}`, data);
     return response.data;
   },
 
   /**
-   * Deletar cliente
+   * Deletar usuário/cliente
    */
   delete: async (id: string) => {
-    const response = await axios.delete(`/api/admin/clientes/${id}`);
+    const response = await axios.delete(`/api/admin/users/${id}`);
     return response.data;
   },
 };
 
-// ============================================================================
-// USUÁRIOS
-// ============================================================================
-
-export const usuarioService = {
-  /**
-   * Listar usuários
-   */
-  list: async (page = 1, limit = 10) => {
-    const response = await axios.get('/api/admin/usuarios', {
-      params: { page, limit },
-    });
-    return response.data;
-  },
-
-  /**
-   * Obter usuário por ID
-   */
-  getById: async (id: string) => {
-    const response = await axios.get(`/api/admin/usuarios/${id}`);
-    return response.data;
-  },
-
-  /**
-   * Criar novo usuário
-   */
-  create: async (data: any) => {
-    const response = await axios.post('/api/admin/usuarios', data);
-    return response.data;
-  },
-
-  /**
-   * Atualizar usuário
-   */
-  update: async (id: string, data: any) => {
-    const response = await axios.put(`/api/admin/usuarios/${id}`, data);
-    return response.data;
-  },
-
-  /**
-   * Deletar usuário
-   */
-  delete: async (id: string) => {
-    const response = await axios.delete(`/api/admin/usuarios/${id}`);
-    return response.data;
-  },
-};
+// Alias para compatibilidade
+export const usuarioService = clienteService;
 
 // ============================================================================
 // TRANSAÇÕES
@@ -191,7 +146,7 @@ export const transacaoService = {
    * Listar transações
    */
   list: async (page = 1, limit = 10, filters?: any) => {
-    const response = await axios.get('/api/admin/transacoes', {
+    const response = await axios.get('/api/admin/transactions', {
       params: { page, limit, ...filters },
     });
     return response.data;
@@ -201,15 +156,15 @@ export const transacaoService = {
    * Obter transação por ID
    */
   getById: async (id: string) => {
-    const response = await axios.get(`/api/admin/transacoes/${id}`);
+    const response = await axios.get(`/api/admin/transactions/${id}`);
     return response.data;
   },
 
   /**
-   * Obter transações por cliente
+   * Obter transações por usuário
    */
   getByCliente: async (clienteId: string, page = 1, limit = 10) => {
-    const response = await axios.get(`/api/admin/clientes/${clienteId}/transacoes`, {
+    const response = await axios.get(`/api/admin/users/${clienteId}/transactions`, {
       params: { page, limit },
     });
     return response.data;

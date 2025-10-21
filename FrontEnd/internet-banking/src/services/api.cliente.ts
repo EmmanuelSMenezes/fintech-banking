@@ -84,7 +84,7 @@ export const authService = {
    * Obter perfil do cliente
    */
   getProfile: async () => {
-    const response = await axios.get('/api/cliente/profile');
+    const response = await axios.get('/api/cliente/perfil');
     return response.data;
   },
 

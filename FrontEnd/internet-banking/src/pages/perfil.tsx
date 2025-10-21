@@ -8,10 +8,16 @@ import MainLayout from '../layouts/main';
 import Iconify from '../components/iconify';
 // sections
 import PerfilForm from '../sections/perfil/PerfilForm';
+// auth
+import AuthGuard from '../auth/AuthGuard';
 
 // ============================================================================
 
-PerfilPage.getLayout = (page: React.ReactElement) => <MainLayout>{page}</MainLayout>;
+PerfilPage.getLayout = (page: React.ReactElement) => (
+  <AuthGuard>
+    <MainLayout>{page}</MainLayout>
+  </AuthGuard>
+);
 
 // ============================================================================
 

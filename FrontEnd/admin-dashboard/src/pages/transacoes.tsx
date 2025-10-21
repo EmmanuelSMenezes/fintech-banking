@@ -8,10 +8,16 @@ import MainLayout from '../layouts/main';
 import Iconify from '../components/iconify';
 // sections
 import TransacoesTable from '../sections/transacoes/TransacoesTable';
+// auth
+import AuthGuard from '../auth/AuthGuard';
 
 // ============================================================================
 
-TransacoesPage.getLayout = (page: React.ReactElement) => <MainLayout>{page}</MainLayout>;
+TransacoesPage.getLayout = (page: React.ReactElement) => (
+  <AuthGuard>
+    <MainLayout>{page}</MainLayout>
+  </AuthGuard>
+);
 
 // ============================================================================
 

@@ -8,10 +8,16 @@ import MainLayout from '../layouts/main';
 import Iconify from '../components/iconify';
 // sections
 import ClientesTable from '../sections/clientes/ClientesTable';
+// auth
+import AuthGuard from '../auth/AuthGuard';
 
 // ============================================================================
 
-ClientesPage.getLayout = (page: React.ReactElement) => <MainLayout>{page}</MainLayout>;
+ClientesPage.getLayout = (page: React.ReactElement) => (
+  <AuthGuard>
+    <MainLayout>{page}</MainLayout>
+  </AuthGuard>
+);
 
 // ============================================================================
 

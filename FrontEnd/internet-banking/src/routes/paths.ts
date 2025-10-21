@@ -7,7 +7,9 @@ function path(root: string, sublink: string) {
 const ROOTS_AUTH = '/auth';
 const ROOTS_DASHBOARD = '/dashboard';
 
-// ----------------------------------------------------------------------
+// ============================================================================
+// OWAYPAY INTERNET BANKING ROUTES
+// ============================================================================
 
 export const PATH_AUTH = {
   root: ROOTS_AUTH,
@@ -18,6 +20,17 @@ export const PATH_AUTH = {
   verify: path(ROOTS_AUTH, '/verify'),
   resetPassword: path(ROOTS_AUTH, '/reset-password'),
   newPassword: path(ROOTS_AUTH, '/new-password'),
+};
+
+// Home
+export const PATH_HOME = {
+  root: '/',
+};
+
+// Cliente Pages
+export const PATH_CLIENTE = {
+  root: '/',
+  perfil: '/perfil',
 };
 
 export const PATH_PAGE = {
