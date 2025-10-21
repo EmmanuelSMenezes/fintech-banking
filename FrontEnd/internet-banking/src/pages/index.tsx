@@ -30,7 +30,7 @@ export default function HomePage() {
   return (
     <>
       <Head>
-        <title> The starting point for your next project | Minimal UI</title>
+        <title>Bem vindo ao Owaypay - Internet Banking</title>
       </Head>
 
       <ScrollProgress />

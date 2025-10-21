@@ -52,7 +52,7 @@ export default function MUICheckboxPage() {
   return (
     <>
       <Head>
-        <title> MUI Components: Checkbox | Minimal UI</title>
+        <title> MUI Components: Checkbox | Owaypay</title>
       </Head>
 
       <Box
@@ -199,3 +199,4 @@ export default function MUICheckboxPage() {
     </>
   );
 }
+

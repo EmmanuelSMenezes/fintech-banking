@@ -18,7 +18,7 @@ export default function MaintenancePage() {
   return (
     <>
       <Head>
-        <title> Maintenance | Minimal UI</title>
+        <title> Maintenance | Owaypay</title>
       </Head>
 
       <Stack sx={{ alignItems: 'center' }}>
@@ -39,3 +39,4 @@ export default function MaintenancePage() {
     </>
   );
 }
+

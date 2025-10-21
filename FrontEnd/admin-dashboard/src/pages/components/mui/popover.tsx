@@ -73,7 +73,7 @@ export default function MUIPopoverPage() {
   return (
     <>
       <Head>
-        <title> MUI Components: Popover | Minimal UI</title>
+        <title> MUI Components: Popover | Owaypay</title>
       </Head>
 
       <Box
@@ -225,3 +225,4 @@ export default function MUIPopoverPage() {
     </>
   );
 }
+

@@ -1,9 +1,9 @@
 {
-  "name": "React Material Minimal UI",
-  "short_name": "Minimal-UI",
+  "name": "Owaypay - Painel Administrativo",
+  "short_name": "Owaypay Admin",
   "display": "standalone",
   "start_url": "/",
-  "theme_color": "#000000",
+  "theme_color": "#0066FF",
   "background_color": "#ffffff",
   "icons": [
     {

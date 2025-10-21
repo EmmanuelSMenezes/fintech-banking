@@ -24,7 +24,7 @@ export default function BlogNewPostPage() {
   return (
     <>
       <Head>
-        <title> Blog: New Post | Minimal UI</title>
+        <title> Blog: New Post | Owaypay</title>
       </Head>
 
       <Container maxWidth={themeStretch ? false : 'lg'}>
@@ -50,3 +50,4 @@ export default function BlogNewPostPage() {
     </>
   );
 }
+

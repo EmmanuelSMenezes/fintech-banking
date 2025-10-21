@@ -23,7 +23,7 @@ export default function MUIBadgePage() {
   return (
     <>
       <Head>
-        <title> MUI Components: Badge | Minimal UI</title>
+        <title> MUI Components: Badge | Owaypay</title>
       </Head>
 
       <Box
@@ -177,3 +177,4 @@ export default function MUIBadgePage() {
     </>
   );
 }
+

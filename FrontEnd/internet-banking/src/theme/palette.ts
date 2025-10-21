@@ -33,21 +33,22 @@ const GREY = {
   900: '#161C24',
 };
 
+// Owaypay Brand Colors
 const PRIMARY = {
-  lighter: '#C8FACD',
-  light: '#5BE584',
-  main: '#00AB55',
-  dark: '#007B55',
-  darker: '#005249',
+  lighter: '#E6F2FF',
+  light: '#80CCFF',
+  main: '#0066FF', // Azul Owaypay
+  dark: '#0052CC',
+  darker: '#003D99',
   contrastText: '#FFFFFF',
 };
 
 const SECONDARY = {
-  lighter: '#D6E4FF',
-  light: '#84A9FF',
-  main: '#3366FF',
-  dark: '#1939B7',
-  darker: '#091A7A',
+  lighter: '#F0E6FF',
+  light: '#B399FF',
+  main: '#6633FF',
+  dark: '#4D1A99',
+  darker: '#330066',
   contrastText: '#FFFFFF',
 };
 
@@ -60,30 +61,33 @@ const INFO = {
   contrastText: '#FFFFFF',
 };
 
+// Owaypay Success - Verde vibrante
 const SUCCESS = {
-  lighter: '#D8FBDE',
-  light: '#86E8AB',
-  main: '#36B37E',
-  dark: '#1B806A',
-  darker: '#0A5554',
+  lighter: '#E6F9F0',
+  light: '#80D9B3',
+  main: '#00B050',
+  dark: '#008040',
+  darker: '#005030',
   contrastText: '#FFFFFF',
 };
 
+// Owaypay Warning - Laranja
 const WARNING = {
-  lighter: '#FFF5CC',
-  light: '#FFD666',
-  main: '#FFAB00',
-  dark: '#B76E00',
-  darker: '#7A4100',
+  lighter: '#FFF4E6',
+  light: '#FFD699',
+  main: '#FF9500',
+  dark: '#CC7700',
+  darker: '#994D00',
   contrastText: GREY[800],
 };
 
+// Owaypay Error - Vermelho
 const ERROR = {
-  lighter: '#FFE9D5',
-  light: '#FFAC82',
-  main: '#FF5630',
-  dark: '#B71D18',
-  darker: '#7A0916',
+  lighter: '#FFE6E8',
+  light: '#FF9999',
+  main: '#E81B23',
+  dark: '#B31418',
+  darker: '#800D0F',
   contrastText: '#FFFFFF',
 };
 

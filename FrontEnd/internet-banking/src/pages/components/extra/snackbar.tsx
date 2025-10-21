@@ -59,7 +59,7 @@ export default function DemoSnackbarPage() {
   return (
     <>
       <Head>
-        <title> Extra Components: Snackbar | Minimal UI</title>
+        <title> Extra Components: Snackbar | Owaypay</title>
       </Head>
 
       <Box
@@ -277,3 +277,4 @@ export default function DemoSnackbarPage() {
     </>
   );
 }
+

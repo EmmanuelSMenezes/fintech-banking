@@ -21,7 +21,7 @@ export default function Page403() {
   return (
     <>
       <Head>
-        <title> 403 Forbidden | Minimal UI</title>
+        <title> 403 Forbidden | Owaypay</title>
       </Head>
 
       <MotionContainer>
@@ -50,3 +50,4 @@ export default function Page403() {
     </>
   );
 }
+

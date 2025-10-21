@@ -17,7 +17,7 @@ export default function AboutPage() {
   return (
     <>
       <Head>
-        <title> About us | Minimal UI</title>
+        <title> About us | Owaypay</title>
       </Head>
 
       <AboutHero />
@@ -34,3 +34,4 @@ export default function AboutPage() {
     </>
   );
 }
+

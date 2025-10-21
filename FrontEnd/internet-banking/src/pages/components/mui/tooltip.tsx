@@ -40,7 +40,7 @@ export default function MUITooltipPage() {
   return (
     <>
       <Head>
-        <title> MUI Components: Tooltip | Minimal UI</title>
+        <title> MUI Components: Tooltip | Owaypay</title>
       </Head>
 
       <Box
@@ -189,3 +189,4 @@ export default function MUITooltipPage() {
     </>
   );
 }
+

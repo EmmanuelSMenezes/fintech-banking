@@ -30,7 +30,7 @@ export default function DemoMegaMenuPage() {
   return (
     <>
       <Head>
-        <title> Extra Components: Mega Menu | Minimal UI</title>
+        <title> Extra Components: Mega Menu | Owaypay</title>
       </Head>
 
       <Box
@@ -259,3 +259,4 @@ const data: MegaMenuItemProps[] = [
     icon: <Iconify icon="eva:file-fill" {...ICON_SIZE} />,
   },
 ];
+

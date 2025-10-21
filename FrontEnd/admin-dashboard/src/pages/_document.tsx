@@ -31,13 +31,13 @@ export default class MyDocument extends Document {
           <meta name="emotion-insertion-point" content="" />
           {(this.props as any).emotionStyleTags}
 
-          {/* Meta */}
+          {/* Meta - Owaypay */}
           <meta
             name="description"
-            content="The starting point for your next project with Minimal UI Kit, built on the newest version of Material-UI ©, ready to be customized to your style"
+            content="Owaypay - Painel Administrativo. Plataforma de cobrança instantânea com Pix e Boleto. Receba pagamentos de forma rápida e segura."
           />
-          <meta name="keywords" content="react,material,kit,application,dashboard,admin,template" />
-          <meta name="author" content="Minimal UI Kit" />
+          <meta name="keywords" content="owaypay,pix,boleto,cobrança,pagamento,fintech,admin,dashboard" />
+          <meta name="author" content="Owaypay" />
         </Head>
 
         <body>

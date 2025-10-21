@@ -195,7 +195,7 @@ export default function UserListPage() {
   return (
     <>
       <Head>
-        <title> User: List | Minimal UI</title>
+        <title> User: List | Owaypay</title>
       </Head>
 
       <Container maxWidth={themeStretch ? false : 'lg'}>
@@ -386,3 +386,4 @@ function applyFilter({
 
   return inputData;
 }
+

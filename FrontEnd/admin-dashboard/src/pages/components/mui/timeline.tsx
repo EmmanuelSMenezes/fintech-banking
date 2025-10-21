@@ -106,7 +106,7 @@ export default function MUITimelinePage() {
   return (
     <>
       <Head>
-        <title> MUI Components: Timeline | Minimal UI</title>
+        <title> MUI Components: Timeline | Owaypay</title>
       </Head>
 
       <Box
@@ -257,3 +257,4 @@ export default function MUITimelinePage() {
     </>
   );
 }
+

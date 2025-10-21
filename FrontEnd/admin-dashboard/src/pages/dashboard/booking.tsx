@@ -43,7 +43,7 @@ export default function GeneralBookingPage() {
   return (
     <>
       <Head>
-        <title> General: Booking | Minimal UI</title>
+        <title> General: Booking | Owaypay</title>
       </Head>
 
       <Container maxWidth={themeStretch ? false : 'xl'}>
@@ -179,3 +179,4 @@ export default function GeneralBookingPage() {
     </>
   );
 }
+

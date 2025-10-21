@@ -36,7 +36,7 @@ export default function DemoFormValidationPage() {
   return (
     <>
       <Head>
-        <title> Extra Components: Form Validation | Minimal UI</title>
+        <title> Extra Components: Form Validation | Owaypay</title>
       </Head>
 
       <Box
@@ -75,3 +75,4 @@ export default function DemoFormValidationPage() {
     </>
   );
 }
+

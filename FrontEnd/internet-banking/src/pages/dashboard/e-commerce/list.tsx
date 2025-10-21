@@ -198,7 +198,7 @@ export default function EcommerceProductListPage() {
   return (
     <>
       <Head>
-        <title> Ecommerce: Product List | Minimal UI</title>
+        <title> Ecommerce: Product List | Owaypay</title>
       </Head>
 
       <Container maxWidth={themeStretch ? false : 'lg'}>
@@ -376,3 +376,4 @@ function applyFilter({
 
   return inputData;
 }
+

@@ -27,7 +27,7 @@ export default function ComingSoonPage() {
   return (
     <>
       <Head>
-        <title> Coming Soon | Minimal UI</title>
+        <title> Coming Soon | Owaypay</title>
       </Head>
 
       <Typography variant="h3" paragraph>
@@ -105,3 +105,4 @@ function TimeBlock({ label, value }: TimeBlockProps) {
     </div>
   );
 }
+

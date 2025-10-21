@@ -97,7 +97,7 @@ export default function MUIListPage() {
   return (
     <>
       <Head>
-        <title> MUI Components: List | Minimal UI</title>
+        <title> MUI Components: List | Owaypay</title>
       </Head>
 
       <Box
@@ -349,3 +349,4 @@ export default function MUIListPage() {
     </>
   );
 }
+

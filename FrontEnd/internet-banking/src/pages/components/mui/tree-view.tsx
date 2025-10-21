@@ -45,7 +45,7 @@ export default function MUITreesViewPage() {
   return (
     <>
       <Head>
-        <title> MUI Components: Tree View | Minimal UI</title>
+        <title> MUI Components: Tree View | Owaypay</title>
       </Head>
 
       <Box
@@ -148,3 +148,4 @@ export default function MUITreesViewPage() {
     </>
   );
 }
+

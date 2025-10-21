@@ -38,7 +38,7 @@ export default function GeneralAnalyticsPage() {
   return (
     <>
       <Head>
-        <title> General: Analytics | Minimal UI</title>
+        <title> General: Analytics | Owaypay</title>
       </Head>
 
       <Container maxWidth={themeStretch ? false : 'xl'}>
@@ -208,3 +208,4 @@ export default function GeneralAnalyticsPage() {
     </>
   );
 }
+

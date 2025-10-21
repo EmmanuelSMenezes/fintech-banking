@@ -50,7 +50,7 @@ export default function MUIAccordionPage() {
   return (
     <>
       <Head>
-        <title> MUI Components: Accordion | Minimal UI</title>
+        <title> MUI Components: Accordion | Owaypay</title>
       </Head>
 
       <Box
@@ -115,3 +115,4 @@ export default function MUIAccordionPage() {
     </>
   );
 }
+

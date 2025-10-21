@@ -236,7 +236,7 @@ export default function InvoiceListPage() {
   return (
     <>
       <Head>
-        <title> Invoice: List | Minimal UI</title>
+        <title> Invoice: List | Owaypay</title>
       </Head>
 
       <Container maxWidth={themeStretch ? false : 'lg'}>
@@ -544,3 +544,4 @@ function applyFilter({
 
   return inputData;
 }
+

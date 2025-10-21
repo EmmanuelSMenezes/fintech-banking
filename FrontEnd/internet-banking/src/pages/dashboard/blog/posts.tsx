@@ -64,7 +64,7 @@ export default function BlogPostsPage() {
   return (
     <>
       <Head>
-        <title> Blog: Posts | Minimal UI</title>
+        <title> Blog: Posts | Owaypay</title>
       </Head>
 
       <Container maxWidth={themeStretch ? false : 'lg'}>
@@ -132,3 +132,4 @@ const applySortBy = (posts: IBlogPost[], sortBy: string) => {
   }
   return posts;
 };
+

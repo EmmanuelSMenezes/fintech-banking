@@ -19,7 +19,7 @@ export default function PricingPage() {
   return (
     <>
       <Head>
-        <title> Pricing | Minimal UI</title>
+        <title> Pricing | Owaypay</title>
       </Head>
 
       <Container
@@ -68,3 +68,4 @@ export default function PricingPage() {
     </>
   );
 }
+

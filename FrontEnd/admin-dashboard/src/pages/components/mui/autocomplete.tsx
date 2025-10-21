@@ -47,7 +47,7 @@ export default function MUIAutocompletePage() {
   return (
     <>
       <Head>
-        <title> MUI Components: Autocomplete | Minimal UI</title>
+        <title> MUI Components: Autocomplete | Owaypay</title>
       </Head>
 
       <Box
@@ -331,3 +331,4 @@ export const top100Films = [
   { title: '3 Idiots', year: 2009 },
   { title: 'Monty Python and the Holy Grail', year: 1975 },
 ];
+

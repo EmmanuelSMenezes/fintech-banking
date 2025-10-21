@@ -24,7 +24,7 @@ export default function MUITablePage() {
   return (
     <>
       <Head>
-        <title> MUI Components: Table | Minimal UI</title>
+        <title> MUI Components: Table | Owaypay</title>
       </Head>
 
       <Box
@@ -74,3 +74,4 @@ export default function MUITablePage() {
     </>
   );
 }
+

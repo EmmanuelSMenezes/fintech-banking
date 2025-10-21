@@ -12,7 +12,7 @@ export default function LoginPage() {
   return (
     <>
       <Head>
-        <title> Login | Minimal UI</title>
+        <title>Bem vindo ao Owaypay - Login | Internet Banking</title>
       </Head>
 
       <GuestGuard>

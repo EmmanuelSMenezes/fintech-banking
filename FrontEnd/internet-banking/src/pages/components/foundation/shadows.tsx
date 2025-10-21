@@ -51,7 +51,7 @@ export default function FoundationShadowsPage() {
   return (
     <>
       <Head>
-        <title> Foundations: Shadows | Minimal UI</title>
+        <title> Foundations: Shadows | Owaypay</title>
       </Head>
 
       <Box
@@ -133,3 +133,4 @@ function ShadowCard({ sx, title }: PaperProps) {
     </Paper>
   );
 }
+

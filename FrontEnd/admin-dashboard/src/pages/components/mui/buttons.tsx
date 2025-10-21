@@ -49,7 +49,7 @@ export default function MUIButtonsPage() {
   return (
     <>
       <Head>
-        <title> MUI Components: Buttons | Minimal UI</title>
+        <title> MUI Components: Buttons | Owaypay</title>
       </Head>
 
       <Box
@@ -98,3 +98,4 @@ export default function MUIButtonsPage() {
     </>
   );
 }
+

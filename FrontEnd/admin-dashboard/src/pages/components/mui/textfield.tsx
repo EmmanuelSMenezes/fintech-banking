@@ -32,7 +32,7 @@ export default function MUITextFieldPage() {
   return (
     <>
       <Head>
-        <title> MUI Components: Textfield | Minimal UI</title>
+        <title> MUI Components: Textfield | Owaypay</title>
       </Head>
 
       <Box
@@ -78,3 +78,4 @@ export default function MUITextFieldPage() {
     </>
   );
 }
+

@@ -19,7 +19,7 @@ export default function ContactPage() {
   return (
     <>
       <Head>
-        <title> Contact us | Minimal UI</title>
+        <title> Contact us | Owaypay</title>
       </Head>
 
       <ContactHero />
@@ -41,3 +41,4 @@ export default function ContactPage() {
     </>
   );
 }
+

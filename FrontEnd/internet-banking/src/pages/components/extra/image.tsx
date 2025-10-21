@@ -29,7 +29,7 @@ export default function DemoImagePage() {
   return (
     <>
       <Head>
-        <title> Extra Components: Image | Minimal UI</title>
+        <title> Extra Components: Image | Owaypay</title>
       </Head>
 
       <Box
@@ -87,3 +87,4 @@ export default function DemoImagePage() {
     </>
   );
 }
+

@@ -26,7 +26,7 @@ export default function DemoLabelPage() {
   return (
     <>
       <Head>
-        <title> Extra Components: Label | Minimal UI</title>
+        <title> Extra Components: Label | Owaypay</title>
       </Head>
 
       <Box
@@ -142,3 +142,4 @@ export function Block({ title, children }: BlockProps) {
     </Paper>
   );
 }
+

@@ -40,7 +40,7 @@ export default function DemoAnimatePage() {
   return (
     <>
       <Head>
-        <title> Extra Components: Animate | Minimal UI</title>
+        <title> Extra Components: Animate | Owaypay</title>
       </Head>
 
       <Box
@@ -84,3 +84,4 @@ export default function DemoAnimatePage() {
     </>
   );
 }
+

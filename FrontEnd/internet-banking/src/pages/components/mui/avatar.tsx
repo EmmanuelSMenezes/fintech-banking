@@ -40,7 +40,7 @@ export default function MUIAvatarPage() {
   return (
     <>
       <Head>
-        <title> MUI Components: Avatar | Minimal UI</title>
+        <title> MUI Components: Avatar | Owaypay</title>
       </Head>
 
       <Box
@@ -223,3 +223,4 @@ export default function MUIAvatarPage() {
     </>
   );
 }
+

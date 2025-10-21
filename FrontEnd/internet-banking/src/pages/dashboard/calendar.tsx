@@ -256,7 +256,7 @@ export default function CalendarPage() {
   return (
     <>
       <Head>
-        <title> Calendar | Minimal UI</title>
+        <title> Calendar | Owaypay</title>
       </Head>
 
       <Container maxWidth={themeStretch ? false : 'xl'}>
@@ -419,3 +419,4 @@ function applyFilter({
 
   return inputData;
 }
+

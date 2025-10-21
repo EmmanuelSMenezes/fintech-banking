@@ -60,7 +60,7 @@ export default function MUIPaginationPage() {
   return (
     <>
       <Head>
-        <title> MUI Components: Pagination | Minimal UI</title>
+        <title> MUI Components: Pagination | Owaypay</title>
       </Head>
 
       <Box
@@ -152,3 +152,4 @@ export default function MUIPaginationPage() {
     </>
   );
 }
+

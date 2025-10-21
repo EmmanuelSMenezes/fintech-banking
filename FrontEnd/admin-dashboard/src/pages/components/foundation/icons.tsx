@@ -33,7 +33,7 @@ export default function FoundationIconsPage() {
   return (
     <>
       <Head>
-        <title> Foundations: Icons | Minimal UI</title>
+        <title> Foundations: Icons | Owaypay</title>
       </Head>
 
       <Box
@@ -113,3 +113,4 @@ export default function FoundationIconsPage() {
     </>
   );
 }
+

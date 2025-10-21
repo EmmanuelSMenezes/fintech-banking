@@ -88,7 +88,7 @@ export default function MUIRatingPage() {
   return (
     <>
       <Head>
-        <title> MUI Components: Rating | Minimal UI</title>
+        <title> MUI Components: Rating | Owaypay</title>
       </Head>
 
       <Box
@@ -208,3 +208,4 @@ function IconContainer(props: IconContainerProps) {
 
   return <span {...other}>{customIcons[value].icon}</span>;
 }
+

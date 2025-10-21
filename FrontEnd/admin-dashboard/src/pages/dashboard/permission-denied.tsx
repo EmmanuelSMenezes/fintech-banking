@@ -43,7 +43,7 @@ export default function PermissionDeniedPage() {
   return (
     <>
       <Head>
-        <title> Other Cases: Permission Denied | Minimal UI</title>
+        <title> Other Cases: Permission Denied | Owaypay</title>
       </Head>
 
       <Container maxWidth={themeStretch ? false : 'lg'}>
@@ -95,3 +95,4 @@ export default function PermissionDeniedPage() {
     </>
   );
 }
+

@@ -98,7 +98,7 @@ export default function MUIMenuPage() {
   return (
     <>
       <Head>
-        <title> MUI Components: Menu | Minimal UI</title>
+        <title> MUI Components: Menu | Owaypay</title>
       </Head>
 
       <Box
@@ -218,3 +218,4 @@ export default function MUIMenuPage() {
     </>
   );
 }
+

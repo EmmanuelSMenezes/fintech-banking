@@ -55,7 +55,7 @@ export default function FoundationTypographyPage() {
   return (
     <>
       <Head>
-        <title> Foundations: Typography | Minimal UI</title>
+        <title> Foundations: Typography | Owaypay</title>
       </Head>
 
       <Box
@@ -170,3 +170,4 @@ function BlockVariant({ font }: BlockVariantProps) {
     </Paper>
   );
 }
+

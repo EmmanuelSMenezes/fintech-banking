@@ -36,7 +36,7 @@ export default function MUIPickersPage() {
   return (
     <>
       <Head>
-        <title> MUI Components: Pickers | Minimal UI</title>
+        <title> MUI Components: Pickers | Owaypay</title>
       </Head>
 
       <Box
@@ -80,3 +80,4 @@ export default function MUIPickersPage() {
     </>
   );
 }
+

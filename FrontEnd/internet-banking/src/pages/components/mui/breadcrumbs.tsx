@@ -22,7 +22,7 @@ export default function MUIBreadcrumbsPage() {
   return (
     <>
       <Head>
-        <title> MUI Components: Breadcrumbs | Minimal UI</title>
+        <title> MUI Components: Breadcrumbs | Owaypay</title>
       </Head>
 
       <Box
@@ -132,3 +132,4 @@ export default function MUIBreadcrumbsPage() {
     </>
   );
 }
+

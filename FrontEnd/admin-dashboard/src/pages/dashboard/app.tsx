@@ -49,7 +49,7 @@ export default function GeneralAppPage() {
   return (
     <>
       <Head>
-        <title> General: App | Minimal UI</title>
+        <title> General: App | Owaypay</title>
       </Head>
 
       <Container maxWidth={themeStretch ? false : 'xl'}>
@@ -210,3 +210,4 @@ export default function GeneralAppPage() {
     </>
   );
 }
+

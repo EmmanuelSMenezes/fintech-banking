@@ -20,7 +20,7 @@ export default function DemoScrollbarPage() {
   return (
     <>
       <Head>
-        <title> Extra Components: Scrollbar | Minimal UI</title>
+        <title> Extra Components: Scrollbar | Owaypay</title>
       </Head>
 
       <Box
@@ -121,3 +121,4 @@ export default function DemoScrollbarPage() {
     </>
   );
 }
+

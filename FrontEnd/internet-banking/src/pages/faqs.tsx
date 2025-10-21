@@ -17,7 +17,7 @@ export default function FaqsPage() {
   return (
     <>
       <Head>
-        <title> Faqs | Minimal UI</title>
+        <title> Faqs | Owaypay</title>
       </Head>
 
       <FaqsHero />
@@ -45,3 +45,4 @@ export default function FaqsPage() {
     </>
   );
 }
+

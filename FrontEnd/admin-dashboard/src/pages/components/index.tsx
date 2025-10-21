@@ -19,7 +19,7 @@ export default function ComponentsOverviewPage() {
   return (
     <>
       <Head>
-        <title> Components Overview | Minimal UI</title>
+        <title> Components Overview | Owaypay</title>
       </Head>
 
       <ComponentHero />
@@ -119,3 +119,4 @@ function Grid({ children }: BoxProps) {
     </Box>
   );
 }
+

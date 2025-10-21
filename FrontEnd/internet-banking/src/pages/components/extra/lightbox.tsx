@@ -71,7 +71,7 @@ export default function DemoLightboxPage() {
   return (
     <>
       <Head>
-        <title> Extra Components: Lightbox | Minimal UI</title>
+        <title> Extra Components: Lightbox | Owaypay</title>
       </Head>
 
       <Box
@@ -256,3 +256,4 @@ export default function DemoLightboxPage() {
     </>
   );
 }
+

@@ -41,7 +41,7 @@ export default function DemoCarouselsPage() {
   return (
     <>
       <Head>
-        <title> Extra Components: Carousels | Minimal UI</title>
+        <title> Extra Components: Carousels | Owaypay</title>
       </Head>
 
       <Box
@@ -123,3 +123,4 @@ export default function DemoCarouselsPage() {
     </>
   );
 }
+

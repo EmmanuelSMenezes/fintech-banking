@@ -26,7 +26,7 @@ export default function EcommerceProductCreatePage() {
   return (
     <>
       <Head>
-        <title> Ecommerce: Create a new product | Minimal UI</title>
+        <title> Ecommerce: Create a new product | Owaypay</title>
       </Head>
 
       <Container maxWidth={themeStretch ? false : 'lg'}>
@@ -46,3 +46,4 @@ export default function EcommerceProductCreatePage() {
     </>
   );
 }
+

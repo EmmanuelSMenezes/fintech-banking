@@ -32,7 +32,7 @@ export default function MUITransferListPage() {
   return (
     <>
       <Head>
-        <title> MUI Components: Transfer List | Minimal UI</title>
+        <title> MUI Components: Transfer List | Owaypay</title>
       </Head>
 
       <Box
@@ -71,3 +71,4 @@ export default function MUITransferListPage() {
     </>
   );
 }
+

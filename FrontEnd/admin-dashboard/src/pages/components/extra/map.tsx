@@ -74,7 +74,7 @@ export default function DemoMapPage() {
   return (
     <>
       <Head>
-        <title> Extra Components: Map | Minimal UI</title>
+        <title> Extra Components: Map | Owaypay</title>
       </Head>
 
       <Box
@@ -202,3 +202,4 @@ export default function DemoMapPage() {
     </>
   );
 }
+

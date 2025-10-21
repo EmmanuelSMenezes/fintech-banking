@@ -11,7 +11,7 @@ export default function RegisterPage() {
   return (
     <>
       <Head>
-        <title> Register | Minimal UI</title>
+        <title>Bem vindo ao Owaypay - Cadastro | Painel Administrativo</title>
       </Head>
 
       <GuestGuard>

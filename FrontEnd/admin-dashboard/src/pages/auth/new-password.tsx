@@ -24,7 +24,7 @@ export default function NewPasswordPage() {
   return (
     <>
       <Head>
-        <title> New Password | Minimal UI</title>
+        <title> New Password | Owaypay</title>
       </Head>
 
       <SentIcon sx={{ mb: 5, height: 96 }} />
@@ -63,3 +63,4 @@ export default function NewPasswordPage() {
     </>
   );
 }
+

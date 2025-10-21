@@ -36,7 +36,7 @@ export default function MUISwitchPage() {
   return (
     <>
       <Head>
-        <title> MUI Components: Switch | Minimal UI</title>
+        <title> MUI Components: Switch | Owaypay</title>
       </Head>
 
       <Box
@@ -114,3 +114,4 @@ export default function MUISwitchPage() {
     </>
   );
 }
+

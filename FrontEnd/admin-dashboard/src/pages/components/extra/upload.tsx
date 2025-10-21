@@ -87,7 +87,7 @@ export default function DemoUploadPage() {
   return (
     <>
       <Head>
-        <title> Extra Components: Upload | Minimal UI</title>
+        <title> Extra Components: Upload | Owaypay</title>
       </Head>
 
       <Box
@@ -197,3 +197,4 @@ export default function DemoUploadPage() {
     </>
   );
 }
+
