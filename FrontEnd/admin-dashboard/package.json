@@ -15,7 +15,10 @@
     "prettier": "prettier --write 'src/**/*.{js,jsx,ts,tsx}'",
     "clear-all": "rm -rf .next .swc _static node_modules",
     "re-start": "rm -rf .next .swc _static node_modules && yarn install && yarn dev",
-    "re-build": "rm -rf .next .swc _static node_modules && yarn install && yarn build"
+    "re-build": "rm -rf .next .swc _static node_modules && yarn install && yarn build",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run",
+    "cypress:watch": "cypress open --watch"
   },
   "dependencies": {
     "@auth0/auth0-spa-js": "^2.0.3",
