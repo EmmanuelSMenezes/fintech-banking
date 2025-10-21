@@ -28,10 +28,10 @@ export default function AuthRegisterForm() {
   const [showPassword, setShowPassword] = useState(false);
 
   const RegisterSchema = Yup.object().shape({
-    firstName: Yup.string().required('First name required'),
-    lastName: Yup.string().required('Last name required'),
-    email: Yup.string().required('Email is required').email('Email must be a valid email address'),
-    password: Yup.string().required('Password is required'),
+    firstName: Yup.string().required('Nome é obrigatório'),
+    lastName: Yup.string().required('Sobrenome é obrigatório'),
+    email: Yup.string().required('Email é obrigatório').email('Email deve ser um endereço válido'),
+    password: Yup.string().required('Senha é obrigatória'),
   });
 
   const defaultValues = {
@@ -74,15 +74,15 @@ export default function AuthRegisterForm() {
         {!!errors.afterSubmit && <Alert severity="error">{errors.afterSubmit.message}</Alert>}
 
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-          <RHFTextField name="firstName" label="First name" />
-          <RHFTextField name="lastName" label="Last name" />
+          <RHFTextField name="firstName" label="Nome" />
+          <RHFTextField name="lastName" label="Sobrenome" />
         </Stack>
 
-        <RHFTextField name="email" label="Email address" />
+        <RHFTextField name="email" label="Email" />
 
         <RHFTextField
           name="password"
-          label="Password"
+          label="Senha"
           type={showPassword ? 'text' : 'password'}
           InputProps={{
             endAdornment: (
@@ -97,21 +97,13 @@ export default function AuthRegisterForm() {
 
         <LoadingButton
           fullWidth
-          color="inherit"
+          color="primary"
           size="large"
           type="submit"
           variant="contained"
           loading={isSubmitting || isSubmitSuccessful}
-          sx={{
-            bgcolor: 'text.primary',
-            color: (theme) => (theme.palette.mode === 'light' ? 'common.white' : 'grey.800'),
-            '&:hover': {
-              bgcolor: 'text.primary',
-              color: (theme) => (theme.palette.mode === 'light' ? 'common.white' : 'grey.800'),
-            },
-          }}
         >
-          Create account
+          Criar conta
         </LoadingButton>
       </Stack>
     </FormProvider>

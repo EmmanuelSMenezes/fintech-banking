@@ -21,12 +21,12 @@ export default function AuthResetPasswordForm() {
   const { push } = useRouter();
 
   const ResetPasswordSchema = Yup.object().shape({
-    email: Yup.string().required('Email is required').email('Email must be a valid email address'),
+    email: Yup.string().required('Email é obrigatório').email('Email deve ser um endereço válido'),
   });
 
   const methods = useForm<FormValuesProps>({
     resolver: yupResolver(ResetPasswordSchema),
-    defaultValues: { email: 'demo@minimals.cc' },
+    defaultValues: { email: 'cliente@owaypay.com' },
   });
 
   const {
@@ -46,7 +46,7 @@ export default function AuthResetPasswordForm() {
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-      <RHFTextField name="email" label="Email address" />
+      <RHFTextField name="email" label="Email" />
 
       <LoadingButton
         fullWidth
@@ -56,7 +56,7 @@ export default function AuthResetPasswordForm() {
         loading={isSubmitting}
         sx={{ mt: 3 }}
       >
-        Send Request
+        Enviar solicitação
       </LoadingButton>
     </FormProvider>
   );

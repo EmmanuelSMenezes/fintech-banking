@@ -14,15 +14,15 @@ import AuthRegisterForm from './AuthRegisterForm';
 
 export default function Register() {
   return (
-    <LoginLayout title="Manage the job more effectively with Minimal">
+    <LoginLayout title="Solicite acesso ao Painel Administrativo">
       <Stack spacing={2} sx={{ mb: 5, position: 'relative' }}>
-        <Typography variant="h4">Get started absolutely free.</Typography>
+        <Typography variant="h4">Solicitar acesso ao painel</Typography>
 
         <Stack direction="row" spacing={0.5}>
-          <Typography variant="body2"> Already have an account? </Typography>
+          <Typography variant="body2">Já tem acesso?</Typography>
 
           <Link component={NextLink} href={PATH_AUTH.login} variant="subtitle2">
-            Sign in
+            Entrar
           </Link>
         </Stack>
       </Stack>
@@ -33,15 +33,15 @@ export default function Register() {
         component="div"
         sx={{ color: 'text.secondary', mt: 3, typography: 'caption', textAlign: 'center' }}
       >
-        {'By signing up, I agree to '}
+        {'Ao solicitar acesso, você concorda com os '}
         <Link underline="always" color="text.primary">
-          Terms of Service
+          Termos de Serviço
         </Link>
-        {' and '}
+        {' e '}
         <Link underline="always" color="text.primary">
-          Privacy Policy
+          Política de Privacidade
         </Link>
-        .
+        {' da Owaypay.'}
       </Typography>
 
       <AuthWithSocial />

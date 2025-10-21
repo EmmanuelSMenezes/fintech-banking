@@ -18,15 +18,15 @@ export default function Login() {
   const { method } = useAuthContext();
 
   return (
-    <LoginLayout>
+    <LoginLayout title="Acesse sua conta Owaypay">
       <Stack spacing={2} sx={{ mb: 5, position: 'relative' }}>
-        <Typography variant="h4">Sign in to Minimal</Typography>
+        <Typography variant="h4">Bem-vindo ao Painel Administrativo</Typography>
 
         <Stack direction="row" spacing={0.5}>
-          <Typography variant="body2">New user?</Typography>
+          <Typography variant="body2">Não tem acesso?</Typography>
 
           <Link component={NextLink} href={PATH_AUTH.register} variant="subtitle2">
-            Create an account
+            Solicitar acesso
           </Link>
         </Stack>
 
@@ -41,7 +41,7 @@ export default function Login() {
       </Stack>
 
       <Alert severity="info" sx={{ mb: 3 }}>
-        Use email : <strong>demo@minimals.cc</strong> / password :<strong> demo1234</strong>
+        Credenciais de teste: <strong>admin@owaypay.com</strong> / senha: <strong>Admin@123</strong>
       </Alert>
 
       <AuthLoginForm />

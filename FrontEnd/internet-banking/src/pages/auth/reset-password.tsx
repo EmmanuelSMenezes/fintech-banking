@@ -30,12 +30,11 @@ export default function ResetPasswordPage() {
       <PasswordIcon sx={{ mb: 5, height: 96 }} />
 
       <Typography variant="h3" paragraph>
-        Forgot your password?
+        Esqueceu sua senha?
       </Typography>
 
       <Typography sx={{ color: 'text.secondary', mb: 5 }}>
-        Please enter the email address associated with your account and We will email you a link to
-        reset your password.
+        Digite o endereço de email associado à sua conta e enviaremos um link para redefinir sua senha.
       </Typography>
 
       <AuthResetPasswordForm />
@@ -53,7 +52,7 @@ export default function ResetPasswordPage() {
         }}
       >
         <Iconify icon="eva:chevron-left-fill" width={16} />
-        Return to sign in
+        Voltar para login
       </Link>
     </>
   );
