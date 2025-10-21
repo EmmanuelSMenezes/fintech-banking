@@ -1,24 +1,11 @@
 // next
 import Head from 'next/head';
 // @mui
-import { Box } from '@mui/material';
+import { Container, Box } from '@mui/material';
 // layouts
 import MainLayout from '../layouts/main';
-// components
-import ScrollProgress from '../components/scroll-progress';
 // sections
-import {
-  HomeHero,
-  HomeMinimal,
-  HomeDarkMode,
-  HomeLookingFor,
-  HomeForDesigner,
-  HomeColorPresets,
-  HomePricingPlans,
-  HomeAdvertisement,
-  HomeCleanInterfaces,
-  HomeHugePackElements,
-} from '../sections/home';
+import ClienteDashboard from '../sections/dashboard/ClienteDashboard';
 
 // ----------------------------------------------------------------------
 
@@ -33,35 +20,11 @@ export default function HomePage() {
         <title>Bem vindo ao Owaypay - Internet Banking</title>
       </Head>
 
-      <ScrollProgress />
-
-      <HomeHero />
-
-      <Box
-        sx={{
-          overflow: 'hidden',
-          position: 'relative',
-          bgcolor: 'background.default',
-        }}
-      >
-        <HomeMinimal />
-
-        <HomeHugePackElements />
-
-        <HomeForDesigner />
-
-        <HomeDarkMode />
-
-        <HomeColorPresets />
-
-        <HomeCleanInterfaces />
-
-        <HomePricingPlans />
-
-        <HomeLookingFor />
-
-        <HomeAdvertisement />
-      </Box>
+      <Container maxWidth="lg" sx={{ py: 4 }}>
+        <Box sx={{ mb: 4 }}>
+          <ClienteDashboard />
+        </Box>
+      </Container>
     </>
   );
 }
