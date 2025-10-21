@@ -99,7 +99,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
       if (accessToken && isValidToken(accessToken)) {
         setSession(accessToken);
 
-        const response = await axios.get('/api/account/my-account');
+        // FinTech Banking - Internet Banking
+        // Endpoint para obter dados do usuário cliente
+        const response = await axios.get('/api/cliente/profile');
 
         const { user } = response.data;
 
@@ -137,10 +139,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   // LOGIN
   const login = useCallback(async (email: string, password: string) => {
-    const response = await axios.post('/api/account/login', {
+    // FinTech Banking - Internet Banking
+    // Endpoint de login para clientes
+    const response = await axios.post('/api/auth/login', {
       email,
       password,
     });
+
+    // Resposta esperada: { accessToken, refreshToken, expiresIn }
     const { accessToken, user } = response.data;
 
     setSession(accessToken);
@@ -156,7 +162,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
   // REGISTER
   const register = useCallback(
     async (email: string, password: string, firstName: string, lastName: string) => {
-      const response = await axios.post('/api/account/register', {
+      // FinTech Banking - Internet Banking
+      // Endpoint de registro para clientes
+      const response = await axios.post('/api/auth/register', {
         email,
         password,
         firstName,

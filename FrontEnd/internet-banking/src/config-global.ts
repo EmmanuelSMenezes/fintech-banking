@@ -4,7 +4,9 @@ import { PATH_DASHBOARD } from './routes/paths';
 // API
 // ----------------------------------------------------------------------
 
-export const HOST_API_KEY = process.env.HOST_API_KEY || '';
+// FinTech Banking - Internet Banking
+// API Interna (5036) - Endpoints para clientes
+export const HOST_API_KEY = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5036';
 
 export const FIREBASE_API = {
   apiKey: process.env.FIREBASE_API_KEY,
