@@ -19,11 +19,18 @@ import {
   MenuItem,
   TextField,
   Stack,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
 } from '@mui/material';
 // icons
 import Iconify from '../../components/iconify';
 // api
 import axios from '../../utils/axios';
+// components
+import ClienteEditDialog from './ClienteEditDialog';
 
 // ============================================================================
 // TIPOS
@@ -57,6 +64,9 @@ export default function ClientesTable() {
   const [searchTerm, setSearchTerm] = useState('');
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedCliente, setSelectedCliente] = useState<Cliente | null>(null);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [actionLoading, setActionLoading] = useState(false);
 
   useEffect(() => {
     fetchClientes();
@@ -100,20 +110,29 @@ export default function ClientesTable() {
     setSelectedCliente(null);
   };
 
-  const handleViewDetails = () => {
-    console.log('Ver detalhes:', selectedCliente);
+  const handleEditClick = () => {
+    setEditDialogOpen(true);
     handleMenuClose();
   };
 
-  const handleToggleActive = async () => {
+  const handleDeleteClick = () => {
+    setDeleteDialogOpen(true);
+    handleMenuClose();
+  };
+
+  const handleDeleteConfirm = async () => {
     if (!selectedCliente) return;
     try {
-      // Aqui você faria a chamada para ativar/desativar o cliente
-      console.log('Toggle active:', selectedCliente.id);
-      handleMenuClose();
+      setActionLoading(true);
+      await axios.delete(`/api/admin/users/${selectedCliente.id}`);
+      setDeleteDialogOpen(false);
+      setSelectedCliente(null);
       fetchClientes();
-    } catch (err) {
-      console.error('Erro ao atualizar cliente:', err);
+    } catch (err: any) {
+      setError(err.response?.data?.message || 'Erro ao deletar cliente');
+      console.error('Delete error:', err);
+    } finally {
+      setActionLoading(false);
     }
   };
 
@@ -233,15 +252,49 @@ export default function ClientesTable() {
         open={Boolean(anchorEl)}
         onClose={handleMenuClose}
       >
-        <MenuItem onClick={handleViewDetails}>
-          <Iconify icon="eva:eye-fill" sx={{ mr: 2 }} />
-          Ver Detalhes
-        </MenuItem>
-        <MenuItem onClick={handleToggleActive}>
+        <MenuItem onClick={handleEditClick}>
           <Iconify icon="eva:edit-fill" sx={{ mr: 2 }} />
-          {selectedCliente?.isActive ? 'Desativar' : 'Ativar'}
+          Editar
+        </MenuItem>
+        <MenuItem onClick={handleDeleteClick} sx={{ color: 'error.main' }}>
+          <Iconify icon="eva:trash-2-fill" sx={{ mr: 2 }} />
+          Deletar
         </MenuItem>
       </Menu>
+
+      {/* EDIT DIALOG */}
+      {selectedCliente && (
+        <ClienteEditDialog
+          open={editDialogOpen}
+          cliente={selectedCliente}
+          onClose={() => setEditDialogOpen(false)}
+          onSuccess={fetchClientes}
+        />
+      )}
+
+      {/* DELETE CONFIRMATION DIALOG */}
+      <Dialog open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)}>
+        <DialogTitle>Confirmar Exclusão</DialogTitle>
+        <DialogContent>
+          <Typography>
+            Tem certeza que deseja deletar o cliente <strong>{selectedCliente?.fullName}</strong>?
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDeleteDialogOpen(false)} disabled={actionLoading}>
+            Cancelar
+          </Button>
+          <Button
+            onClick={handleDeleteConfirm}
+            variant="contained"
+            color="error"
+            disabled={actionLoading}
+            startIcon={actionLoading ? <CircularProgress size={20} /> : undefined}
+          >
+            {actionLoading ? 'Deletando...' : 'Deletar'}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Card>
   );
 }
