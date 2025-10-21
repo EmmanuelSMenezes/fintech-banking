@@ -1,0 +1,113 @@
+#root {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .dashboard-header {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+
+  .user-info {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .dashboard-main {
+    padding: 20px 10px;
+  }
+
+  .actions-grid {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 15px;
+  }
+
+  .action-btn {
+    padding: 20px 15px;
+    font-size: 13px;
+  }
+
+  .action-icon {
+    font-size: 32px;
+  }
+
+  .balance-amount {
+    font-size: 36px;
+  }
+
+  .transaction-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .tx-amount {
+    width: 100%;
+    text-align: left;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-header {
+    padding: 15px 20px;
+  }
+
+  .dashboard-header h1 {
+    font-size: 22px;
+  }
+
+  .user-info {
+    gap: 10px;
+  }
+
+  .user-info span {
+    font-size: 12px;
+  }
+
+  .logout-btn {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  .auth-card {
+    padding: 30px 20px;
+  }
+
+  .auth-card h1 {
+    font-size: 24px;
+  }
+
+  .auth-card h2 {
+    font-size: 16px;
+  }
+
+  .balance-card {
+    padding: 25px 15px;
+  }
+
+  .balance-amount {
+    font-size: 28px;
+  }
+
+  .transactions-section {
+    padding: 20px;
+  }
+
+  .transaction-item {
+    padding: 12px 15px;
+  }
+
+  .tx-type {
+    font-size: 13px;
+  }
+
+  .amount {
+    font-size: 16px;
+  }
+}

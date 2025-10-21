@@ -1,0 +1,106 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: fintech_postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: fintech_banking
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./src/FinTechBanking.Data/Migrations:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - fintech_network
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: fintech_rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - fintech_network
+
+  api_cliente:
+    build:
+      context: .
+      dockerfile: src/FinTechBanking.API.Cliente/Dockerfile
+    container_name: fintech_api_cliente
+    ports:
+      - "5167:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=fintech_banking;Username=postgres;Password=postgres
+      - RabbitMQ__Host=rabbitmq
+      - RabbitMQ__Port=5672
+      - RabbitMQ__Username=guest
+      - RabbitMQ__Password=guest
+      - Jwt__Issuer=FinTechBanking.API.Cliente
+      - Jwt__Audience=FinTechBanking.Clients
+      - Jwt__SecretKey=your-super-secret-key-for-jwt-token-generation-fintech-banking-api-cliente
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - fintech_network
+
+  api_interna:
+    build:
+      context: .
+      dockerfile: src/FinTechBanking.API.Interna/Dockerfile
+    container_name: fintech_api_interna
+    ports:
+      - "5036:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=fintech_banking;Username=postgres;Password=postgres
+      - RabbitMQ__Host=rabbitmq
+      - RabbitMQ__Port=5672
+      - RabbitMQ__Username=guest
+      - RabbitMQ__Password=guest
+      - Jwt__Issuer=FinTechBanking.API.Interna
+      - Jwt__Audience=FinTechBanking.Admin
+      - Jwt__SecretKey=your-super-secret-key-for-jwt-token-generation-fintech-banking-api-interna
+      - Email__SmtpServer=smtp.gmail.com
+      - Email__SmtpPort=587
+      - Email__SenderEmail=your-email@gmail.com
+      - Email__SenderPassword=your-app-password
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - fintech_network
+
+volumes:
+  postgres_data:
+  rabbitmq_data:
+
+networks:
+  fintech_network:
+    driver: bridge
+

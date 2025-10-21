@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\FinTechBanking.Core\FinTechBanking.Core.csproj" />
+    <ProjectReference Include="..\FinTechBanking.Data\FinTechBanking.Data.csproj" />
+    <ProjectReference Include="..\FinTechBanking.Services\FinTechBanking.Services.csproj" />
+    <ProjectReference Include="..\FinTechBanking.Banking\FinTechBanking.Banking.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>

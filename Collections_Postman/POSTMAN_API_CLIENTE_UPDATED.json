@@ -1,0 +1,187 @@
+{
+  "info": {
+    "name": "FinTech Banking - API Cliente",
+    "description": "Collection para testar a API Cliente (Internet Banking) - ATUALIZADA",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"cliente@example.com\",\n  \"password\": \"Senha123!\",\n  \"fullName\": \"João Silva\",\n  \"document\": \"12345678900\",\n  \"phoneNumber\": \"11999999999\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5167/api/auth/register",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5167",
+              "path": ["api", "auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"cliente@example.com\",\n  \"password\": \"Senha123!\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5167/api/auth/login",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5167",
+              "path": ["api", "auth", "login"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Transactions",
+      "item": [
+        {
+          "name": "Get Balance",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{client_token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5167/api/transactions/balance",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5167",
+              "path": ["api", "transactions", "balance"]
+            }
+          }
+        },
+        {
+          "name": "Get History",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{client_token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5167/api/transactions/history",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5167",
+              "path": ["api", "transactions", "history"]
+            }
+          }
+        },
+        {
+          "name": "Generate PIX QR Code",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{client_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 100.00,\n  \"description\": \"Pagamento de teste\",\n  \"recipientKey\": \"chave-pix@example.com\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5167/api/transactions/pix/qrcode",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5167",
+              "path": ["api", "transactions", "pix", "qrcode"]
+            }
+          }
+        },
+        {
+          "name": "Request Withdrawal",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{client_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 500.00,\n  \"accountNumber\": \"123456\",\n  \"bankCode\": \"001\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5167/api/transactions/withdrawal",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5167",
+              "path": ["api", "transactions", "withdrawal"]
+            }
+          }
+        },
+        {
+          "name": "Get Transaction Status",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{client_token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5167/api/transactions/{{transaction_id}}/status",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5167",
+              "path": ["api", "transactions", "{{transaction_id}}", "status"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "client_token",
+      "value": ""
+    },
+    {
+      "key": "transaction_id",
+      "value": ""
+    }
+  ]
+}
+
