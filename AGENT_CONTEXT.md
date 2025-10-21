@@ -4,7 +4,9 @@
 
 **FinTech Banking** é um sistema completo de gateway bancário com:
 - **Backend:** 3 APIs .NET 9 (Principal, Cliente, Interna)
-- **Frontend:** React 18 + Vite (fintech-frontend)
+- **Frontend:** 2 Painéis Next.js 14 + TypeScript
+  - Admin Dashboard (Painel Administrativo)
+  - Internet Banking (Plataforma Cliente)
 - **Banco de Dados:** PostgreSQL 15
 - **Message Broker:** RabbitMQ 3
 - **Integração:** Sicoob Banking Hub
@@ -12,19 +14,18 @@
 ## 🏗️ Arquitetura
 
 ```
-Frontend (5173)
-    ↓
+Admin Dashboard (3000)  ──┐
+                         ├─→ API Interna (5036)
+Internet Banking (3001) ─┘       ├─ PostgreSQL (5432)
+                                 ├─ RabbitMQ (5672)
+                                 └─ Sicoob Banking Hub
+
 API Principal (5064)
     ├─ PostgreSQL (5432)
     ├─ RabbitMQ (5672)
     └─ Sicoob Banking Hub
-    
+
 API Cliente (5167)
-    ├─ PostgreSQL (5432)
-    ├─ RabbitMQ (5672)
-    └─ Sicoob Banking Hub
-    
-API Interna (5036)
     ├─ PostgreSQL (5432)
     ├─ RabbitMQ (5672)
     └─ Sicoob Banking Hub
@@ -33,7 +34,8 @@ API Interna (5036)
 ## 🔑 Informações Críticas
 
 ### Portas
-- Frontend: 5173
+- Admin Dashboard: 3000
+- Internet Banking: 3001
 - API Principal: 5064
 - API Cliente: 5167
 - API Interna: 5036
@@ -47,7 +49,8 @@ Senha: Senha123!
 ```
 
 ### URLs Importantes
-- Frontend: http://localhost:5173
+- Admin Dashboard: http://localhost:3000
+- Internet Banking: http://localhost:3001
 - Swagger Principal: http://localhost:5064/swagger
 - Swagger Cliente: http://localhost:5167/swagger
 - Swagger Interna: http://localhost:5036/swagger
@@ -103,22 +106,36 @@ Backend/
 └── FinTechBanking.sln
 
 FrontEnd/
-├── fintech-frontend/                    # React + Vite (5173)
+├── admin-dashboard/                     # Next.js 14 + TypeScript (3000)
 │   ├── src/
+│   │   ├── pages/
 │   │   ├── components/
-│   │   │   ├── Auth/
-│   │   │   │   ├── Login.jsx
-│   │   │   │   ├── Register.jsx
-│   │   │   │   └── Auth.css
-│   │   │   └── Dashboard/
-│   │   │       ├── Dashboard.jsx
-│   │   │       └── Dashboard.css
-│   │   ├── services/
-│   │   │   └── api.js                   # API Client
-│   │   ├── App.jsx
-│   │   ├── App.css
-│   │   └── index.css
-│   └── package.json
+│   │   ├── sections/
+│   │   ├── auth/
+│   │   ├── theme/
+│   │   └── utils/
+│   ├── .env.local.example
+│   ├── package.json
+│   ├── next.config.js
+│   └── README_FINTECH.md
+│
+├── internet-banking/                    # Next.js 14 + TypeScript (3001)
+│   ├── src/
+│   │   ├── pages/
+│   │   ├── components/
+│   │   ├── sections/
+│   │   ├── auth/
+│   │   ├── theme/
+│   │   └── utils/
+│   ├── .env.local.example
+│   ├── package.json
+│   ├── next.config.js
+│   └── README_FINTECH.md
+│
+├── SETUP_GUIDE.md                       # Guia de instalação
+├── FRONTENDS_OVERVIEW.md                # Visão geral dos frontends
+├── REORGANIZATION_SUMMARY.md            # Resumo da reorganização
+└── run-all.ps1                          # Script para rodar ambos
 
 Collections_Postman/                     # Postman Collections
 
@@ -154,10 +171,30 @@ cd Backend/src/FinTechBanking.API.Interna
 dotnet run
 ```
 
-### 3. Frontend
+### 3. Frontends (2 Terminais)
+
+#### Admin Dashboard
 ```bash
-cd FrontEnd/fintech-frontend
+cd FrontEnd/admin-dashboard
+cp .env.local.example .env.local
+npm install
 npm run dev
+# http://localhost:3000
+```
+
+#### Internet Banking
+```bash
+cd FrontEnd/internet-banking
+cp .env.local.example .env.local
+npm install
+npm run dev
+# http://localhost:3001
+```
+
+#### Ou rodar ambos simultaneamente (PowerShell)
+```bash
+cd FrontEnd
+.\run-all.ps1
 ```
 
 ## 🔐 Autenticação
