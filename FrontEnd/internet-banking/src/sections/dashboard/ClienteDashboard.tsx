@@ -60,12 +60,12 @@ export default function ClienteDashboard() {
   const fetchDashboardData = async () => {
     try {
       setError(null);
-      
+
       // Buscar saldo
       try {
         setLoadingSaldo(true);
         const saldoResponse = await axios.get('/api/cliente/saldo');
-        setSaldo(saldoResponse.data);
+        setSaldo(saldoResponse.data.data);
       } catch (err) {
         console.error('Erro ao buscar saldo:', err);
       } finally {
@@ -78,7 +78,7 @@ export default function ClienteDashboard() {
         const transacoesResponse = await axios.get('/api/cliente/transacoes', {
           params: { page: 1, limit: 10 }
         });
-        setTransacoes(transacoesResponse.data.data || transacoesResponse.data);
+        setTransacoes(transacoesResponse.data.data || []);
       } catch (err) {
         console.error('Erro ao buscar transações:', err);
       } finally {

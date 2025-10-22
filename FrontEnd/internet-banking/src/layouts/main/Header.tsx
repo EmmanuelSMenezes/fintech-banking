@@ -52,9 +52,9 @@ export default function Header() {
         <Container sx={{ height: 1, display: 'flex', alignItems: 'center' }}>
           <Logo />
 
-          <Box sx={{ flexGrow: 1 }} />
-
           {isDesktop && <NavDesktop isOffset={isOffset} data={navConfig} />}
+
+          <Box sx={{ flexGrow: 1 }} />
 
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <AccountPopover />
