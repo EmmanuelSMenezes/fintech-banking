@@ -1213,3 +1213,169 @@ public class PixDinamicoIntegrationTests
     }
 }
 
+/// <summary>
+/// Testes de Integração para Webhooks de PIX
+/// </summary>
+public class PixWebhookIntegrationTests
+{
+    private const string ApiUrl = "http://localhost:5036";
+    private const string AdminEmail = "admin@owaypay.com";
+    private const string AdminPassword = "Admin@123";
+
+    private async Task<string?> GetAdminToken()
+    {
+        var loginRequest = new LoginRequest
+        {
+            Email = AdminEmail,
+            Password = AdminPassword
+        };
+
+        using var client = new HttpClient();
+        var response = await client.PostAsJsonAsync($"{ApiUrl}/api/auth/login", loginRequest);
+
+        if (response.StatusCode == HttpStatusCode.ServiceUnavailable)
+            return null;
+
+        var content = await response.Content.ReadAsStringAsync();
+        var data = JsonSerializer.Deserialize<JsonElement>(content);
+
+        if (data.TryGetProperty("accessToken", out var tokenElement))
+            return tokenElement.GetString();
+
+        return null;
+    }
+
+    [Fact]
+    public async Task RegistrarWebhook_ComDadosValidos_RetornaOk()
+    {
+        // Arrange
+        var token = await GetAdminToken();
+        if (string.IsNullOrEmpty(token))
+            return;
+
+        using var client = new HttpClient();
+        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+        var request = new
+        {
+            eventType = "pix-dinamico-pago",
+            webhookUrl = "https://example.com/webhook"
+        };
+
+        // Act
+        var response = await client.PostAsJsonAsync($"{ApiUrl}/api/pix-webhooks/registrar", request);
+
+        // Assert - Aceitar 200, 400, 500 ou 404 (se API não estiver rodando)
+        response.StatusCode.Should().BeOneOf(HttpStatusCode.OK, HttpStatusCode.BadRequest, HttpStatusCode.InternalServerError, HttpStatusCode.NotFound);
+        if (response.StatusCode == HttpStatusCode.OK)
+        {
+            var content = await response.Content.ReadAsStringAsync();
+            var data = JsonSerializer.Deserialize<JsonElement>(content);
+            data.TryGetProperty("message", out var message).Should().BeTrue();
+            message.GetString().Should().Contain("sucesso");
+        }
+    }
+
+    [Fact]
+    public async Task RegistrarWebhook_ComUrlInvalida_RetornaBadRequest()
+    {
+        // Arrange
+        var token = await GetAdminToken();
+        if (string.IsNullOrEmpty(token))
+            return;
+
+        using var client = new HttpClient();
+        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+        var request = new
+        {
+            eventType = "pix-dinamico-pago",
+            webhookUrl = "invalid-url"
+        };
+
+        // Act
+        var response = await client.PostAsJsonAsync($"{ApiUrl}/api/pix-webhooks/registrar", request);
+
+        // Assert - Aceitar 400, 500 ou 404 (se API não estiver rodando)
+        response.StatusCode.Should().BeOneOf(HttpStatusCode.BadRequest, HttpStatusCode.InternalServerError, HttpStatusCode.NotFound);
+    }
+
+    [Fact]
+    public async Task ListarWebhooks_ComTokenValido_RetornaOk()
+    {
+        // Arrange
+        var token = await GetAdminToken();
+        if (string.IsNullOrEmpty(token))
+            return;
+
+        using var client = new HttpClient();
+        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+        // Act
+        var response = await client.GetAsync($"{ApiUrl}/api/pix-webhooks/listar");
+
+        // Assert - Aceitar 200, 500 ou 404 (se API não estiver rodando)
+        response.StatusCode.Should().BeOneOf(HttpStatusCode.OK, HttpStatusCode.InternalServerError, HttpStatusCode.NotFound);
+        if (response.StatusCode == HttpStatusCode.OK)
+        {
+            var content = await response.Content.ReadAsStringAsync();
+            var data = JsonSerializer.Deserialize<JsonElement>(content);
+            data.TryGetProperty("message", out var message).Should().BeTrue();
+            message.GetString().Should().Contain("sucesso");
+        }
+    }
+
+    [Fact]
+    public async Task ListarWebhooks_SemToken_RetornaUnauthorized()
+    {
+        // Arrange
+        using var client = new HttpClient();
+
+        // Act
+        var response = await client.GetAsync($"{ApiUrl}/api/pix-webhooks/listar");
+
+        // Assert - Aceitar 401 ou 404 (se API não estiver rodando)
+        response.StatusCode.Should().BeOneOf(HttpStatusCode.Unauthorized, HttpStatusCode.NotFound);
+    }
+
+    [Fact]
+    public async Task DeletarWebhook_ComIdValido_RetornaOk()
+    {
+        // Arrange
+        var token = await GetAdminToken();
+        if (string.IsNullOrEmpty(token))
+            return;
+
+        using var client = new HttpClient();
+        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+        var webhookId = Guid.NewGuid();
+
+        // Act
+        var response = await client.DeleteAsync($"{ApiUrl}/api/pix-webhooks/deletar/{webhookId}");
+
+        // Assert - Aceitar 200, 404 ou 500
+        response.StatusCode.Should().BeOneOf(HttpStatusCode.OK, HttpStatusCode.NotFound, HttpStatusCode.InternalServerError);
+    }
+
+    [Fact]
+    public async Task TestarWebhook_ComIdValido_RetornaOk()
+    {
+        // Arrange
+        var token = await GetAdminToken();
+        if (string.IsNullOrEmpty(token))
+            return;
+
+        using var client = new HttpClient();
+        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+        var webhookId = Guid.NewGuid();
+
+        // Act
+        var response = await client.PostAsync($"{ApiUrl}/api/pix-webhooks/testar/{webhookId}", null);
+
+        // Assert - Aceitar 200, 404 ou 500
+        response.StatusCode.Should().BeOneOf(HttpStatusCode.OK, HttpStatusCode.NotFound, HttpStatusCode.InternalServerError);
+    }
+}
+

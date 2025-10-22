@@ -73,6 +73,7 @@ builder.Services.AddScoped<ITransactionRepository>(sp => new TransactionReposito
 builder.Services.AddScoped<IAccountRepository>(sp => new AccountRepository(connectionString));
 builder.Services.AddScoped<IWebhookLogRepository>(sp => new WebhookLogRepository(connectionString));
 builder.Services.AddScoped<IPixRepository>(sp => new PixRepository(connectionString));
+builder.Services.AddScoped<IPixWebhookRepository>(sp => new PixWebhookRepository(connectionString));
 
 // Register Webhook Service
 builder.Services.AddScoped<IWebhookService, WebhookService>();
@@ -80,6 +81,9 @@ builder.Services.AddHttpClient<IWebhookService, WebhookService>();
 
 // Register PIX Service
 builder.Services.AddScoped<IPixService, PixService>();
+
+// Register PIX Webhook Service
+builder.Services.AddScoped<IPixWebhookService, PixWebhookService>();
 
 // Register Rate Limiting Service
 builder.Services.AddMemoryCache();
