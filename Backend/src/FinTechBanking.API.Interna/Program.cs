@@ -8,6 +8,7 @@ using FinTechBanking.Services.Messaging;
 using FinTechBanking.Services.Webhooks;
 using FinTechBanking.Services.RateLimiting;
 using FinTechBanking.Services.Auditing;
+using FinTechBanking.Services.Pix;
 using FinTechBanking.API.Interna.Middleware;
 using FinTechBanking.Banking.Hub;
 using FinTechBanking.Banking.Services;
@@ -71,10 +72,14 @@ builder.Services.AddScoped<IUserRepository>(sp => new UserRepository(connectionS
 builder.Services.AddScoped<ITransactionRepository>(sp => new TransactionRepository(connectionString));
 builder.Services.AddScoped<IAccountRepository>(sp => new AccountRepository(connectionString));
 builder.Services.AddScoped<IWebhookLogRepository>(sp => new WebhookLogRepository(connectionString));
+builder.Services.AddScoped<IPixRepository>(sp => new PixRepository(connectionString));
 
 // Register Webhook Service
 builder.Services.AddScoped<IWebhookService, WebhookService>();
 builder.Services.AddHttpClient<IWebhookService, WebhookService>();
+
+// Register PIX Service
+builder.Services.AddScoped<IPixService, PixService>();
 
 // Register Rate Limiting Service
 builder.Services.AddMemoryCache();

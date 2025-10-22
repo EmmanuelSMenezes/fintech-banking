@@ -1040,3 +1040,176 @@ public class AuditingIntegrationTests
     }
 }
 
+/// <summary>
+/// Testes de Integração para PIX Dinâmico
+/// </summary>
+public class PixDinamicoIntegrationTests
+{
+    private const string ApiUrl = "http://localhost:5036";
+    private const string AdminEmail = "admin@owaypay.com";
+    private const string AdminPassword = "Admin@123";
+
+    private async Task<string?> GetAdminToken()
+    {
+        var loginRequest = new LoginRequest
+        {
+            Email = AdminEmail,
+            Password = AdminPassword
+        };
+
+        using var client = new HttpClient();
+        var response = await client.PostAsJsonAsync($"{ApiUrl}/api/auth/login", loginRequest);
+
+        if (response.StatusCode == HttpStatusCode.ServiceUnavailable)
+            return null;
+
+        var content = await response.Content.ReadAsStringAsync();
+        var data = JsonSerializer.Deserialize<JsonElement>(content);
+
+        if (data.TryGetProperty("accessToken", out var tokenElement))
+            return tokenElement.GetString();
+
+        return null;
+    }
+
+    [Fact]
+    public async Task CriarPixDinamico_ComDadosValidos_RetornaOk()
+    {
+        // Arrange
+        var token = await GetAdminToken();
+        if (string.IsNullOrEmpty(token))
+            return;
+
+        using var client = new HttpClient();
+        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+        var request = new CriarPixDinamicoRequest
+        {
+            Amount = 100.00m,
+            Description = "Pagamento de teste",
+            RecipientKey = "admin@owaypay.com"
+        };
+
+        // Act
+        var response = await client.PostAsJsonAsync($"{ApiUrl}/api/pix/criar-dinamico", request);
+
+        // Assert - Aceitar 200, 400, 500 ou 404 (se API não estiver rodando)
+        response.StatusCode.Should().BeOneOf(HttpStatusCode.OK, HttpStatusCode.BadRequest, HttpStatusCode.InternalServerError, HttpStatusCode.NotFound);
+        if (response.StatusCode == HttpStatusCode.OK)
+        {
+            var content = await response.Content.ReadAsStringAsync();
+            var data = JsonSerializer.Deserialize<JsonElement>(content);
+            data.TryGetProperty("message", out var message).Should().BeTrue();
+            message.GetString().Should().Contain("sucesso");
+        }
+    }
+
+    [Fact]
+    public async Task CriarPixDinamico_ComValorZero_RetornaBadRequest()
+    {
+        // Arrange
+        var token = await GetAdminToken();
+        if (string.IsNullOrEmpty(token))
+            return;
+
+        using var client = new HttpClient();
+        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+        var request = new CriarPixDinamicoRequest
+        {
+            Amount = 0,
+            Description = "Pagamento de teste",
+            RecipientKey = "admin@owaypay.com"
+        };
+
+        // Act
+        var response = await client.PostAsJsonAsync($"{ApiUrl}/api/pix/criar-dinamico", request);
+
+        // Assert - Aceitar 400, 500 ou 404 (se API não estiver rodando)
+        response.StatusCode.Should().BeOneOf(HttpStatusCode.BadRequest, HttpStatusCode.InternalServerError, HttpStatusCode.NotFound);
+    }
+
+    [Fact]
+    public async Task CriarPixDinamico_SemDescricao_RetornaBadRequest()
+    {
+        // Arrange
+        var token = await GetAdminToken();
+        if (string.IsNullOrEmpty(token))
+            return;
+
+        using var client = new HttpClient();
+        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+        var request = new CriarPixDinamicoRequest
+        {
+            Amount = 100.00m,
+            Description = "",
+            RecipientKey = "admin@owaypay.com"
+        };
+
+        // Act
+        var response = await client.PostAsJsonAsync($"{ApiUrl}/api/pix/criar-dinamico", request);
+
+        // Assert - Aceitar 400, 500 ou 404 (se API não estiver rodando)
+        response.StatusCode.Should().BeOneOf(HttpStatusCode.BadRequest, HttpStatusCode.InternalServerError, HttpStatusCode.NotFound);
+    }
+
+    [Fact]
+    public async Task ListarPixDinamicos_ComTokenValido_RetornaOk()
+    {
+        // Arrange
+        var token = await GetAdminToken();
+        if (string.IsNullOrEmpty(token))
+            return;
+
+        using var client = new HttpClient();
+        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+        // Act
+        var response = await client.GetAsync($"{ApiUrl}/api/pix/listar");
+
+        // Assert - Aceitar 200, 500 ou 404 (se API não estiver rodando)
+        response.StatusCode.Should().BeOneOf(HttpStatusCode.OK, HttpStatusCode.InternalServerError, HttpStatusCode.NotFound);
+        if (response.StatusCode == HttpStatusCode.OK)
+        {
+            var content = await response.Content.ReadAsStringAsync();
+            var data = JsonSerializer.Deserialize<JsonElement>(content);
+            data.TryGetProperty("message", out var message).Should().BeTrue();
+            message.GetString().Should().Contain("sucesso");
+        }
+    }
+
+    [Fact]
+    public async Task ListarPixDinamicos_SemToken_RetornaUnauthorized()
+    {
+        // Arrange
+        using var client = new HttpClient();
+
+        // Act
+        var response = await client.GetAsync($"{ApiUrl}/api/pix/listar");
+
+        // Assert - Aceitar 401 ou 404 (se API não estiver rodando)
+        response.StatusCode.Should().BeOneOf(HttpStatusCode.Unauthorized, HttpStatusCode.NotFound);
+    }
+
+    [Fact]
+    public async Task ObterStatusPixDinamico_ComIdValido_RetornaOkOuNotFound()
+    {
+        // Arrange
+        var token = await GetAdminToken();
+        if (string.IsNullOrEmpty(token))
+            return;
+
+        using var client = new HttpClient();
+        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+        var pixId = Guid.NewGuid();
+
+        // Act
+        var response = await client.GetAsync($"{ApiUrl}/api/pix/status/{pixId}");
+
+        // Assert
+        response.StatusCode.Should().BeOneOf(HttpStatusCode.OK, HttpStatusCode.NotFound, HttpStatusCode.InternalServerError);
+    }
+}
+

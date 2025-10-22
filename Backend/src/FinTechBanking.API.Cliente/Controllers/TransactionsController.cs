@@ -135,6 +135,65 @@ public class TransactionsController : ControllerBase
         }
     }
 
+    [HttpGet("balance")]
+    public async Task<ActionResult<object>> GetBalance()
+    {
+        try
+        {
+            var userId = Guid.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? throw new UnauthorizedAccessException());
+            var account = await _accountRepository.GetByUserIdAsync(userId);
+
+            if (account == null)
+                return NotFound(new { message = "Account not found" });
+
+            return Ok(new
+            {
+                balance = account.Balance,
+                accountNumber = account.AccountNumber,
+                bankCode = account.BankCode
+            });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = "Error retrieving balance", error = ex.Message });
+        }
+    }
+
+    [HttpGet("history")]
+    public async Task<ActionResult<object>> GetTransactionHistory()
+    {
+        try
+        {
+            var userId = Guid.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? throw new UnauthorizedAccessException());
+            var account = await _accountRepository.GetByUserIdAsync(userId);
+
+            if (account == null)
+                return NotFound(new { message = "Account not found" });
+
+            // Get all transactions for this account
+            var transactions = await _transactionRepository.GetByAccountIdAsync(account.Id);
+
+            return Ok(new
+            {
+                transactions = transactions.Select(t => new
+                {
+                    id = t.Id,
+                    transactionType = t.TransactionType,
+                    type = t.TransactionType,
+                    amount = t.Amount,
+                    status = t.Status,
+                    description = t.Description,
+                    createdAt = t.CreatedAt,
+                    completedAt = t.CompletedAt
+                }).ToList()
+            });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = "Error retrieving transaction history", error = ex.Message });
+        }
+    }
+
     [HttpGet("{transactionId}")]
     public async Task<ActionResult<TransactionStatusResponse>> GetTransactionStatus(Guid transactionId)
     {
