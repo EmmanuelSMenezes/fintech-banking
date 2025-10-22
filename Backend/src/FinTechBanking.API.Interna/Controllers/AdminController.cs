@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using FinTechBanking.Core.Interfaces;
 using FinTechBanking.Core.Entities;
+using FinTechBanking.API.Interna.Attributes;
 using Npgsql;
 
 namespace FinTechBanking.API.Interna.Controllers;
@@ -10,6 +11,7 @@ namespace FinTechBanking.API.Interna.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
+[RateLimit(maxRequests: 100, windowSeconds: 60)]
 public class AdminController : ControllerBase
 {
     private readonly IUserRepository _userRepository;
@@ -167,6 +169,20 @@ public class AdminController : ControllerBase
 
             await _userRepository.CreateAsync(user);
 
+            // Create account for the user
+            var account = new Account
+            {
+                Id = Guid.NewGuid(),
+                UserId = user.Id,
+                AccountNumber = $"OWP{user.Id.ToString().Substring(0, 8).ToUpper()}",
+                BankCode = "001",
+                Balance = 0,
+                IsActive = true,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            await _accountRepository.CreateAsync(account);
+
             return Ok(new
             {
                 message = "User created successfully",
@@ -174,7 +190,8 @@ public class AdminController : ControllerBase
                 {
                     id = user.Id,
                     email = user.Email,
-                    fullName = user.FullName
+                    fullName = user.FullName,
+                    accountId = account.Id
                 }
             });
         }

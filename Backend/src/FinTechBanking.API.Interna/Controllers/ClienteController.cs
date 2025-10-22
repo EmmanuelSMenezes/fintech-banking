@@ -3,12 +3,14 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using FinTechBanking.Core.Interfaces;
 using FinTechBanking.Core.Entities;
+using FinTechBanking.API.Interna.Attributes;
 
 namespace FinTechBanking.API.Interna.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
+[RateLimit(maxRequests: 200, windowSeconds: 60)]
 public class ClienteController : ControllerBase
 {
     private readonly IUserRepository _userRepository;
@@ -220,11 +222,128 @@ public class ClienteController : ControllerBase
             return StatusCode(500, new { message = "Erro ao carregar transação", error = ex.Message });
         }
     }
+
+    /// <summary>
+    /// Gerar cobrança/PIX
+    /// </summary>
+    [HttpPost("cobrancas")]
+    public async Task<ActionResult<object>> CreateCobranca([FromBody] CreateCobrancaRequest request)
+    {
+        try
+        {
+            var userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? throw new UnauthorizedAccessException());
+            var account = await _accountRepository.GetByUserIdAsync(userId);
+
+            if (account == null)
+                return NotFound(new { message = "Conta não encontrada" });
+
+            // Criar transação de cobrança
+            var transaction = new Transaction
+            {
+                Id = Guid.NewGuid(),
+                AccountId = account.Id,
+                UserId = userId,
+                TransactionType = "PIX",
+                Amount = request.Amount,
+                Status = "PENDING",
+                Description = request.Description ?? "Cobrança PIX",
+                CreatedAt = DateTime.UtcNow
+            };
+
+            await _transactionRepository.CreateAsync(transaction);
+
+            _logger.LogInformation("Cobrança criada: {TransactionId}", transaction.Id);
+
+            return Ok(new
+            {
+                message = "Cobrança criada com sucesso",
+                data = new
+                {
+                    id = transaction.Id,
+                    qrCode = $"00020126580014br.gov.bcb.pix0136{transaction.Id}520400005303986540510.005802BR5913OWAYPAY6009SAO PAULO62410503***63041D3D",
+                    pixKey = "owaypay@pix",
+                    amount = transaction.Amount,
+                    status = transaction.Status
+                }
+            });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Erro ao criar cobrança");
+            return StatusCode(500, new { message = "Erro ao criar cobrança", error = ex.Message });
+        }
+    }
+
+    /// <summary>
+    /// Solicitar saque
+    /// </summary>
+    [HttpPost("saques")]
+    public async Task<ActionResult<object>> RequestWithdrawal([FromBody] RequestWithdrawalRequest request)
+    {
+        try
+        {
+            var userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? throw new UnauthorizedAccessException());
+            var account = await _accountRepository.GetByUserIdAsync(userId);
+
+            if (account == null)
+                return NotFound(new { message = "Conta não encontrada" });
+
+            if (account.Balance < request.Amount)
+                return BadRequest(new { message = "Saldo insuficiente" });
+
+            // Criar transação de saque
+            var transaction = new Transaction
+            {
+                Id = Guid.NewGuid(),
+                AccountId = account.Id,
+                UserId = userId,
+                TransactionType = "WITHDRAWAL",
+                Amount = request.Amount,
+                Status = "PENDING",
+                Description = request.Description ?? "Saque solicitado",
+                CreatedAt = DateTime.UtcNow
+            };
+
+            await _transactionRepository.CreateAsync(transaction);
+
+            _logger.LogInformation("Saque solicitado: {TransactionId}", transaction.Id);
+
+            return Ok(new
+            {
+                message = "Saque solicitado com sucesso",
+                data = new
+                {
+                    id = transaction.Id,
+                    amount = transaction.Amount,
+                    status = transaction.Status,
+                    createdAt = transaction.CreatedAt
+                }
+            });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Erro ao solicitar saque");
+            return StatusCode(500, new { message = "Erro ao solicitar saque", error = ex.Message });
+        }
+    }
 }
 
 public class UpdatePerfilRequest
 {
     public string? FullName { get; set; }
     public string? PhoneNumber { get; set; }
+}
+
+public class CreateCobrancaRequest
+{
+    public long Amount { get; set; }
+    public string? Description { get; set; }
+    public string? PixKey { get; set; }
+}
+
+public class RequestWithdrawalRequest
+{
+    public long Amount { get; set; }
+    public string? Description { get; set; }
 }
 

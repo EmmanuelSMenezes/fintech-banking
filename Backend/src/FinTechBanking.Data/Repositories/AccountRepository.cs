@@ -28,6 +28,13 @@ public class AccountRepository : IAccountRepository
         return await connection.QueryFirstOrDefaultAsync<Account>(sql, new { UserId = userId });
     }
 
+    public async Task<Account> GetByAccountNumberAsync(string accountNumber)
+    {
+        using var connection = new NpgsqlConnection(_connectionString);
+        const string sql = "SELECT * FROM accounts WHERE account_number = @AccountNumber";
+        return await connection.QueryFirstOrDefaultAsync<Account>(sql, new { AccountNumber = accountNumber });
+    }
+
     public async Task<Account> CreateAsync(Account account)
     {
         using var connection = new NpgsqlConnection(_connectionString);

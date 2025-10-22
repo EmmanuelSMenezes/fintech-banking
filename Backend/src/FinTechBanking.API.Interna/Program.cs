@@ -5,6 +5,10 @@ using FinTechBanking.Core.Interfaces;
 using FinTechBanking.Data;
 using FinTechBanking.Data.Repositories;
 using FinTechBanking.Services.Messaging;
+using FinTechBanking.Services.Webhooks;
+using FinTechBanking.Services.RateLimiting;
+using FinTechBanking.Services.Auditing;
+using FinTechBanking.API.Interna.Middleware;
 using FinTechBanking.Banking.Hub;
 using FinTechBanking.Banking.Services;
 
@@ -66,6 +70,19 @@ var rabbitMqConnectionString = builder.Configuration.GetConnectionString("Rabbit
 builder.Services.AddScoped<IUserRepository>(sp => new UserRepository(connectionString));
 builder.Services.AddScoped<ITransactionRepository>(sp => new TransactionRepository(connectionString));
 builder.Services.AddScoped<IAccountRepository>(sp => new AccountRepository(connectionString));
+builder.Services.AddScoped<IWebhookLogRepository>(sp => new WebhookLogRepository(connectionString));
+
+// Register Webhook Service
+builder.Services.AddScoped<IWebhookService, WebhookService>();
+builder.Services.AddHttpClient<IWebhookService, WebhookService>();
+
+// Register Rate Limiting Service
+builder.Services.AddMemoryCache();
+builder.Services.AddScoped<IRateLimitService, RateLimitService>();
+
+// Register Audit Service
+builder.Services.AddScoped<IAuditRepository>(sp => new AuditRepository(connectionString));
+builder.Services.AddScoped<IAuditService, AuditService>();
 
 // Register Message Broker
 builder.Services.AddSingleton<IMessageBroker>(sp => new RabbitMqBroker(rabbitMqConnectionString));
@@ -123,6 +140,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseCors("AllowAll");
+app.UseAuditMiddleware();
 app.UseAuthentication();
 app.UseAuthorization();
 
