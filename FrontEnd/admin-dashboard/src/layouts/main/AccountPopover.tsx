@@ -4,17 +4,15 @@ import { useRouter } from 'next/router';
 // @mui
 import {
   Box,
-  Button,
   Avatar,
   Divider,
   MenuItem,
-  Stack,
   IconButton,
   Popover,
   Typography,
 } from '@mui/material';
 // auth
-import { useAuthContext } from '../../auth/JwtContext';
+import { useAuthContext } from '../../auth/useAuthContext';
 // components
 import Iconify from '../../components/iconify';
 
@@ -34,9 +32,9 @@ export default function AccountPopover() {
     setOpen(null);
   };
 
-  const handleLogout = async () => {
+  const handleLogout = () => {
     handleClose();
-    await logout();
+    logout();
     router.push('/auth/login');
   };
 
@@ -61,7 +59,7 @@ export default function AccountPopover() {
         }}
       >
         <Avatar sx={{ bgcolor: 'primary.main', color: 'white' }}>
-          {user?.email?.charAt(0).toUpperCase()}
+          {user?.email ? user.email.charAt(0).toUpperCase() : 'A'}
         </Avatar>
       </IconButton>
 
