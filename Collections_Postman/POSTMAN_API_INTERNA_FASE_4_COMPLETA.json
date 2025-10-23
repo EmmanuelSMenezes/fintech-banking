@@ -1,0 +1,314 @@
+{
+  "info": {
+    "name": "FinTech Banking - API Interna (Fase 4 Completa)",
+    "description": "Collection completa para testar a API Interna com todas as features: Autenticação, Transações, PIX Dinâmico, Webhooks e Transferências Agendadas",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "🔐 Autenticação",
+      "item": [
+        {
+          "name": "Login Admin",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@fintech.com\",\n  \"password\": \"Admin@123\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5036/api/auth/login",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5036",
+              "path": ["api", "auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Login Cliente",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"cliente@example.com\",\n  \"password\": \"Senha@123\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5036/api/auth/login",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5036",
+              "path": ["api", "auth", "login"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "💰 Transações PIX",
+      "item": [
+        {
+          "name": "Criar Transação PIX",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{user_token}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"accountId\": \"{{account_id}}\",\n  \"recipientKey\": \"12345678901234567890123456789012\",\n  \"amount\": 100.00,\n  \"description\": \"Pagamento de teste\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5036/api/transferencias",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5036",
+              "path": ["api", "transferencias"]
+            }
+          }
+        },
+        {
+          "name": "Listar Transações",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{user_token}}"}],
+            "url": {
+              "raw": "http://localhost:5036/api/transferencias?page=1&pageSize=10",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5036",
+              "path": ["api", "transferencias"],
+              "query": [
+                {"key": "page", "value": "1"},
+                {"key": "pageSize", "value": "10"}
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🎯 PIX Dinâmico (Fase 2)",
+      "item": [
+        {
+          "name": "Criar PIX Dinâmico",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{user_token}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"accountId\": \"{{account_id}}\",\n  \"amount\": 250.00,\n  \"description\": \"Cobrança PIX Dinâmico\",\n  \"expirationMinutes\": 30\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5036/api/pix-dinamico/criar",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5036",
+              "path": ["api", "pix-dinamico", "criar"]
+            }
+          }
+        },
+        {
+          "name": "Listar PIX Dinâmicos",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{user_token}}"}],
+            "url": {
+              "raw": "http://localhost:5036/api/pix-dinamico/listar",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5036",
+              "path": ["api", "pix-dinamico", "listar"]
+            }
+          }
+        },
+        {
+          "name": "Obter Detalhes PIX Dinâmico",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{user_token}}"}],
+            "url": {
+              "raw": "http://localhost:5036/api/pix-dinamico/{{pix_id}}",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5036",
+              "path": ["api", "pix-dinamico", "{{pix_id}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🔔 Webhooks PIX (Fase 3)",
+      "item": [
+        {
+          "name": "Registrar Webhook",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{user_token}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"eventType\": \"PIX_RECEIVED\",\n  \"webhookUrl\": \"https://seu-dominio.com/webhook/pix\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5036/api/pix-webhooks/registrar",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5036",
+              "path": ["api", "pix-webhooks", "registrar"]
+            }
+          }
+        },
+        {
+          "name": "Listar Webhooks",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{user_token}}"}],
+            "url": {
+              "raw": "http://localhost:5036/api/pix-webhooks/listar",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5036",
+              "path": ["api", "pix-webhooks", "listar"]
+            }
+          }
+        },
+        {
+          "name": "Testar Webhook",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Authorization", "value": "Bearer {{user_token}}"}],
+            "url": {
+              "raw": "http://localhost:5036/api/pix-webhooks/testar/{{webhook_id}}",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5036",
+              "path": ["api", "pix-webhooks", "testar", "{{webhook_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Ativar/Desativar Webhook",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{user_token}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"isActive\": true\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5036/api/pix-webhooks/ativar-desativar/{{webhook_id}}",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5036",
+              "path": ["api", "pix-webhooks", "ativar-desativar", "{{webhook_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Deletar Webhook",
+          "request": {
+            "method": "DELETE",
+            "header": [{"key": "Authorization", "value": "Bearer {{user_token}}"}],
+            "url": {
+              "raw": "http://localhost:5036/api/pix-webhooks/deletar/{{webhook_id}}",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5036",
+              "path": ["api", "pix-webhooks", "deletar", "{{webhook_id}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "📅 Transferências Agendadas (Fase 4)",
+      "item": [
+        {
+          "name": "Agendar Transferência",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{user_token}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"accountId\": \"{{account_id}}\",\n  \"recipientKey\": \"12345678901234567890123456789012\",\n  \"amount\": 150.00,\n  \"description\": \"Transferência agendada\",\n  \"scheduledDate\": \"2025-10-30T14:30:00Z\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5036/api/transferencias/agendar",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5036",
+              "path": ["api", "transferencias", "agendar"]
+            }
+          }
+        },
+        {
+          "name": "Listar Transferências Agendadas",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{user_token}}"}],
+            "url": {
+              "raw": "http://localhost:5036/api/transferencias/agendadas",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5036",
+              "path": ["api", "transferencias", "agendadas"]
+            }
+          }
+        },
+        {
+          "name": "Obter Detalhes Transferência Agendada",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{user_token}}"}],
+            "url": {
+              "raw": "http://localhost:5036/api/transferencias/agendadas/{{scheduled_transfer_id}}",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5036",
+              "path": ["api", "transferencias", "agendadas", "{{scheduled_transfer_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Cancelar Transferência Agendada",
+          "request": {
+            "method": "DELETE",
+            "header": [{"key": "Authorization", "value": "Bearer {{user_token}}"}],
+            "url": {
+              "raw": "http://localhost:5036/api/transferencias/agendadas/{{scheduled_transfer_id}}",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5036",
+              "path": ["api", "transferencias", "agendadas", "{{scheduled_transfer_id}}"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {"key": "user_token", "value": ""},
+    {"key": "admin_token", "value": ""},
+    {"key": "account_id", "value": ""},
+    {"key": "pix_id", "value": ""},
+    {"key": "webhook_id", "value": ""},
+    {"key": "scheduled_transfer_id", "value": ""}
+  ]
+}
+
