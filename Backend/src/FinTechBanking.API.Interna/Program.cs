@@ -9,6 +9,7 @@ using FinTechBanking.Services.Webhooks;
 using FinTechBanking.Services.RateLimiting;
 using FinTechBanking.Services.Auditing;
 using FinTechBanking.Services.Pix;
+using FinTechBanking.Services.ScheduledTransfers;
 using FinTechBanking.API.Interna.Middleware;
 using FinTechBanking.Banking.Hub;
 using FinTechBanking.Banking.Services;
@@ -84,6 +85,10 @@ builder.Services.AddScoped<IPixService, PixService>();
 
 // Register PIX Webhook Service
 builder.Services.AddScoped<IPixWebhookService, PixWebhookService>();
+
+// Register Scheduled Transfer Service
+builder.Services.AddScoped<IScheduledTransferRepository>(sp => new ScheduledTransferRepository(connectionString));
+builder.Services.AddScoped<IScheduledTransferService, ScheduledTransferService>();
 
 // Register Rate Limiting Service
 builder.Services.AddMemoryCache();
