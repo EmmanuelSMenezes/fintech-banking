@@ -39,10 +39,19 @@
 - [x] 6 testes de integração
 - [x] Total: 74 testes passando
 
-### ⏳ FASE 4 - EM PLANEJAMENTO
-- [ ] Opção 1: Transferências Agendadas (Recomendado)
-- [ ] Opção 2: Relatórios Avançados
-- [ ] Opção 3: Integração com Mais Bancos
+### ✅ FASE 4 - TRANSFERÊNCIAS AGENDADAS
+- [x] Entidade ScheduledTransfer
+- [x] Serviço de Agendamento
+- [x] 4 endpoints REST
+- [x] Execução automática de transferências
+- [x] Validações de data e valor
+- [x] 6 testes de integração
+- [x] Total: 80 testes passando
+
+### ⏳ FASE 5 - EM PLANEJAMENTO
+- [ ] Opção 1: Relatórios Avançados (Recomendado)
+- [ ] Opção 2: Integração com Mais Bancos
+- [ ] Opção 3: Notificações em Tempo Real
 
 ---
 
@@ -69,13 +78,13 @@
 
 | Métrica | Valor |
 |---------|-------|
-| Total de Arquivos Criados | 26 |
-| Total de Arquivos Modificados | 5 |
-| Total de Testes | 74 |
+| Total de Arquivos Criados | 35 |
+| Total de Arquivos Modificados | 7 |
+| Total de Testes | 80 |
 | Taxa de Sucesso | 100% |
 | Erros de Build | 0 |
-| Commits Realizados | 5 |
-| Linhas de Código | ~3500+ |
+| Commits Realizados | 7 |
+| Linhas de Código | ~4200+ |
 
 ---
 
@@ -104,6 +113,12 @@
 - `DELETE /api/pix-webhooks/deletar/{id}` - Deletar
 - `POST /api/pix-webhooks/testar/{id}` - Testar
 - `PUT /api/pix-webhooks/ativar-desativar/{id}` - Ativar/Desativar
+
+### Transferências Agendadas
+- `POST /api/transferencias/agendar` - Agendar
+- `GET /api/transferencias/agendadas` - Listar
+- `GET /api/transferencias/agendadas/{id}` - Obter detalhes
+- `DELETE /api/transferencias/agendadas/{id}` - Cancelar
 
 ---
 
