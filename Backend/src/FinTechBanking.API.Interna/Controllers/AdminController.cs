@@ -411,6 +411,221 @@ public class AdminController : ControllerBase
             return StatusCode(500, new { message = "Error loading dashboard", error = ex.Message });
         }
     }
+
+    /// <summary>
+    /// Listar todos os clientes com paginação
+    /// </summary>
+    [HttpGet("clientes")]
+    [Authorize(Roles = "admin")]
+    public async Task<ActionResult<object>> ListClientes([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+    {
+        try
+        {
+            var allUsers = await _userRepository.GetAllAsync();
+
+            // Filtrar apenas clientes (não admins)
+            var clientes = allUsers
+                .Where(u => u.Role != "admin")
+                .OrderByDescending(u => u.CreatedAt)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .Select(u => new
+                {
+                    id = u.Id,
+                    email = u.Email,
+                    fullName = u.FullName,
+                    document = u.Document,
+                    phoneNumber = u.PhoneNumber,
+                    isActive = u.IsActive,
+                    createdAt = u.CreatedAt,
+                    role = u.Role
+                })
+                .ToList();
+
+            var totalClientes = allUsers.Count(u => u.Role != "admin");
+
+            return Ok(new
+            {
+                message = "Clientes listed successfully",
+                data = new
+                {
+                    clientes = clientes,
+                    page = page,
+                    pageSize = pageSize,
+                    total = totalClientes
+                }
+            });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = "Error listing clientes", error = ex.Message });
+        }
+    }
+
+    /// <summary>
+    /// Obter detalhes de um cliente específico
+    /// </summary>
+    [HttpGet("clientes/{clienteId}")]
+    [Authorize(Roles = "admin")]
+    public async Task<ActionResult<object>> GetClienteDetails(Guid clienteId)
+    {
+        try
+        {
+            var cliente = await _userRepository.GetByIdAsync(clienteId);
+            if (cliente == null)
+                return NotFound(new { message = "Cliente not found" });
+
+            var account = await _accountRepository.GetByUserIdAsync(clienteId);
+            var transactions = account != null ? await _transactionRepository.GetByAccountIdAsync(account.Id) : new List<Transaction>();
+
+            return Ok(new
+            {
+                message = "Cliente details retrieved successfully",
+                data = new
+                {
+                    id = cliente.Id,
+                    email = cliente.Email,
+                    fullName = cliente.FullName,
+                    document = cliente.Document,
+                    phoneNumber = cliente.PhoneNumber,
+                    isActive = cliente.IsActive,
+                    createdAt = cliente.CreatedAt,
+                    role = cliente.Role,
+                    account = account != null ? new
+                    {
+                        accountNumber = account.AccountNumber,
+                        balance = account.Balance,
+                        bankCode = account.BankCode
+                    } : null,
+                    transactionCount = transactions?.Count() ?? 0
+                }
+            });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = "Error getting cliente details", error = ex.Message });
+        }
+    }
+
+    /// <summary>
+    /// Criar novo cliente
+    /// </summary>
+    [HttpPost("clientes")]
+    [Authorize(Roles = "admin")]
+    public async Task<ActionResult<object>> CreateCliente([FromBody] CreateClienteRequest request)
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Password))
+                return BadRequest(new { message = "Email and password are required" });
+
+            // Verificar se email já existe
+            var existingUser = await _userRepository.GetByEmailAsync(request.Email);
+            if (existingUser != null)
+                return BadRequest(new { message = "Email already exists" });
+
+            // Criar novo usuário
+            var newUser = new User
+            {
+                Id = Guid.NewGuid(),
+                Email = request.Email,
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
+                FullName = request.FullName ?? "Cliente",
+                Document = request.Document ?? "",
+                PhoneNumber = request.PhoneNumber ?? "",
+                IsActive = true,
+                Role = "user",
+                CreatedAt = DateTime.UtcNow
+            };
+
+            var createdUser = await _userRepository.CreateAsync(newUser);
+
+            // Criar conta associada
+            var newAccount = new Account
+            {
+                Id = Guid.NewGuid(),
+                UserId = createdUser.Id,
+                AccountNumber = GenerateAccountNumber(),
+                Balance = 0,
+                BankCode = "001",
+                IsActive = true,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            var createdAccount = await _accountRepository.CreateAsync(newAccount);
+
+            return Ok(new
+            {
+                message = "Cliente created successfully",
+                data = new
+                {
+                    id = createdUser.Id,
+                    email = createdUser.Email,
+                    fullName = createdUser.FullName,
+                    accountNumber = createdAccount.AccountNumber
+                }
+            });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = "Error creating cliente", error = ex.Message });
+        }
+    }
+
+    /// <summary>
+    /// Atualizar cliente
+    /// </summary>
+    [HttpPut("clientes/{clienteId}")]
+    [Authorize(Roles = "admin")]
+    public async Task<ActionResult<object>> UpdateCliente(Guid clienteId, [FromBody] UpdateClienteRequest request)
+    {
+        try
+        {
+            var cliente = await _userRepository.GetByIdAsync(clienteId);
+            if (cliente == null)
+                return NotFound(new { message = "Cliente not found" });
+
+            // Atualizar campos
+            if (!string.IsNullOrEmpty(request.FullName))
+                cliente.FullName = request.FullName;
+
+            if (!string.IsNullOrEmpty(request.PhoneNumber))
+                cliente.PhoneNumber = request.PhoneNumber;
+
+            if (!string.IsNullOrEmpty(request.Document))
+                cliente.Document = request.Document;
+
+            if (request.IsActive.HasValue)
+                cliente.IsActive = request.IsActive.Value;
+
+            await _userRepository.UpdateAsync(cliente);
+
+            return Ok(new
+            {
+                message = "Cliente updated successfully",
+                data = new
+                {
+                    id = cliente.Id,
+                    email = cliente.Email,
+                    fullName = cliente.FullName,
+                    phoneNumber = cliente.PhoneNumber,
+                    isActive = cliente.IsActive
+                }
+            });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = "Error updating cliente", error = ex.Message });
+        }
+    }
+
+    /// <summary>
+    /// Gera um número de conta único
+    /// </summary>
+    private string GenerateAccountNumber()
+    {
+        return DateTime.UtcNow.Ticks.ToString().Substring(0, 10);
+    }
 }
 
 /// <summary>
@@ -423,5 +638,28 @@ public class CreateUserRequest
     public string? FullName { get; set; }
     public string? Document { get; set; }
     public string? PhoneNumber { get; set; }
+}
+
+/// <summary>
+/// Request para criar novo cliente
+/// </summary>
+public class CreateClienteRequest
+{
+    public string? Email { get; set; }
+    public string? Password { get; set; }
+    public string? FullName { get; set; }
+    public string? Document { get; set; }
+    public string? PhoneNumber { get; set; }
+}
+
+/// <summary>
+/// Request para atualizar cliente
+/// </summary>
+public class UpdateClienteRequest
+{
+    public string? FullName { get; set; }
+    public string? PhoneNumber { get; set; }
+    public string? Document { get; set; }
+    public bool? IsActive { get; set; }
 }
 
